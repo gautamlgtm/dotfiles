@@ -1,0 +1,10 @@
+--max-columns=150
+--max-columns-preview
+
+--smart-case
+
+-g=!*.chunk.js
+-g=!*.chunk.js.map
+-g=!**/src/services/openapi
+-g=!**/src/services/swaggerapi
+-g=!**/src/services/swaggerapianon

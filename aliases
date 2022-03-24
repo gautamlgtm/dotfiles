@@ -1,0 +1,147 @@
+# Basic utilities
+# grep
+alias grep='grep --color=auto'
+alias rgg="rg -g '!*test*'"
+alias pg="rg -g '*\.py'"
+alias pgg="rgg -g '*\.py'"
+
+# find process
+alias pf="ps aux | grep"
+alias fp="lsof -aPi -p"
+
+# ipython
+alias p='ipython'
+
+# ls
+LS_BASE="ls -AFGh"
+alias l="$LS_BASE"
+alias ll="$LS_BASE -gl"
+alias lS="$LS_BASE -glS"
+alias lt="$LS_BASE -gltr"
+alias ls="ls -FG"
+
+
+#verbose file utils 
+alias mvv='nocorrect mv -iv'
+alias rmm='nocorrect rm -Iv' # -I to prompt when more than 3 files
+
+
+# vim
+alias v='vim'
+
+# which
+alias w='which'
+
+# Git
+GIT_BASE="git"
+alias g="$GIT_BASE"
+
+# add
+alias add="$GIT_BASE add"
+alias ap="$GIT_BASE add --intent-to-add . && $GIT_BASE add -p"
+
+# branch
+alias branch="$GIT_BASE branch"
+alias br="$GIT_BASE branch"
+function brd {
+REMOTE_BRANCHES="$($GIT_BASE ls-remote --heads | awk '{print $2}' | cut -c 12-)"
+$GIT_BASE branch | grep -v 'master$' | grep -v $REMOTE_BRANCHES | xargs $GIT_BASE branch -D
+}
+
+# clone
+alias clone="$GIT_BASE clone"
+
+# commit
+alias ca="$GIT_BASE commit -v --amend"
+alias cm="$GIT_BASE commit -v"
+
+# checkout
+alias co="$GIT_BASE checkout"
+alias ma="$GIT_BASE checkout master"
+
+# diff
+alias d="$GIT_BASE diff --name-status"
+alias dd="$GIT_BASE diff"
+
+# log
+alias gl="$GIT_BASE log --oneline"
+# l used for ls
+alias gll="$GIT_BASE log"
+alias glgd="$GIT_BASE log --graph --decorate"
+alias glp="$GIT_BASE log -p"
+
+# push
+alias push="$GIT_BASE push"
+
+# rebase
+alias re="$GIT_BASE rebase"
+
+# pull
+alias pull="$GIT_BASE pull --rebase"
+
+# status
+alias st="$GIT_BASE status"
+
+# show
+alias show="$GIT_BASE show"
+
+# stashing
+alias stash="$GIT_BASE stash"
+alias pop="$GIT_BASE stash pop"
+
+# reset
+alias reset="$GIT_BASE reset"
+
+# stats
+alias gg='$GIT_BASE shortlog -sn --since="1 week"'
+
+# Code management
+# Lint
+# js
+alias lint="npm run mac-lint"
+
+# Container management
+# Docker
+alias dk="docker"
+
+# K8s
+KUBECTL_BASE="kubectl"
+
+alias k="$KUBECTL_BASE"
+
+alias kg="$KUBECTL_BASE get"
+alias kgp="$KUBECTL_BASE get pod"
+
+alias kd="$KUBECTL_BASE describe"
+alias kdp="$KUBECTL_BASE describe pod"
+
+alias kl="$KUBECTL_BASE logs"
+alias klf="$KUBECTL_BASE logs -f"
+
+function ksh {
+KSH_CMD="$KUBECTL_BASE exec -it $@ -- /bin/bash"
+eval ${KSH_CMD}
+}
+
+
+# Dev tools
+# Shells
+function mis_base {
+color 20 00 00
+./manage.py shell_plus --ipython $@
+reset_color
+}
+
+alias mis="mis_base --print-sql"
+
+
+# Pytest
+alias it='pytest -rEf --ds config.settings.integration_test -m integration -s --no-cov --reuse-db'
+alias ut='pytest -rEf --no-cov --ds config.settings.test -m "not integration" -s'
+
+#ssh 
+alias keyup='. ssh-agent-init;ssh-keychain-init'
+
+# Shell tools
+alias aliases="vim ~d/aliases"
+alias reload="source ~/dotfiles/.zshrc"
