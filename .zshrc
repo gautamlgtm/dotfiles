@@ -108,19 +108,16 @@ export PYTHONBREAKPOINT=ipdb.set_trace
 #dotfiles
 hash -d d="$HOME/dotfiles"
 
-#Homebrew
-eval $(/opt/homebrew/bin/brew shellenv)
-
 #easypost 
-export PATH="/Users/gpappu/ssh-setup:$PATH"
+if [ -d ~/ssh-setup ]; then 
+    export PATH="$HOME/ssh-setup:$PATH"
+fi 
+
 hash -d hq="$HOME/easypost"
 
 
 #GOSETUP 
 export GOROOT="/usr/local/go"
-
-#arc 
-export PATH="$PATH:/Users/gpappu/arcanist/bin"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
