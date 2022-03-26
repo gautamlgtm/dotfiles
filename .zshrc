@@ -1,13 +1,15 @@
 
 zstyle :compinstall filename "$HOME/.zshrc"
 
-export ZSH="/Users/gautampappu/.oh-my-zsh"
+export ZSH="/Users/gpappu/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 fpath+=$HOME/.zsh/pure
 autoload -U promptinit; promptinit
 prompt pure
 
+zmodload zsh/nearcolor
+zstyle :prompt:pure:path color white
 
 setopt EXTENDEDGLOB
 
@@ -26,7 +28,6 @@ plugins=(
     git
     npm
     macos
-    colored-man-pages
     fast-syntax-highlighting
     zsh-256color
     virtualenv
@@ -72,7 +73,6 @@ export TERM=xterm-256color
 
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-export LSCOLORS='GxFxCxDxBxegedabagaced'
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=246"
 
 export EDITOR=vim
@@ -109,17 +109,18 @@ export PYTHONBREAKPOINT=ipdb.set_trace
 hash -d d="$HOME/dotfiles"
 
 #Homebrew
-export PATH="/Users/gautampappu/homebrew/bin:$PATH"
+eval $(/opt/homebrew/bin/brew shellenv)
 
 #easypost 
-export PATH="/Users/gautampappu/easypost/ssh-scripts:$PATH"
+export PATH="/Users/gpappu/ssh-setup:$PATH"
 hash -d hq="$HOME/easypost"
 
 
 #GOSETUP 
 export GOROOT="/usr/local/go"
 
-
+#arc 
+export PATH="$PATH:/Users/gpappu/arcanist/bin"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
