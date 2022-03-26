@@ -9,7 +9,7 @@ autoload -U promptinit; promptinit
 prompt pure
 
 zmodload zsh/nearcolor
-zstyle :prompt:pure:path color white
+zstyle :prompt:pure:path color cyan
 
 setopt EXTENDEDGLOB
 
@@ -28,9 +28,9 @@ plugins=(
     git
     npm
     macos
+    colored-man-pages
     fast-syntax-highlighting
     zsh-256color
-    virtualenv
     zsh-autosuggestions
 )
 
@@ -73,6 +73,7 @@ export TERM=xterm-256color
 
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+export LSCOLORS='GxFxCxDxBxegedabagaced'
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=246"
 
 export EDITOR=vim
@@ -108,18 +109,24 @@ export PYTHONBREAKPOINT=ipdb.set_trace
 #dotfiles
 hash -d d="$HOME/dotfiles"
 
-#easypost 
-if [ -d ~/ssh-setup ]; then 
+#easypost
+if [ -d ~/ssh-setup ]; then
     export PATH="$HOME/ssh-setup:$PATH"
-fi 
+fi
 
 hash -d hq="$HOME/easypost"
 
 
-#GOSETUP 
+#GOSETUP
 export GOROOT="/usr/local/go"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#Homebrew
+export PATH="$HOME/homebrew/bin:$PATH"
 
+#easypost
+export PATH="$HOME/easypost/ssh-scripts:$PATH"
+hash -d hq="$HOME/easypost"
+
+
+#GOSETUP
+export GOROOT="/usr/local/go"

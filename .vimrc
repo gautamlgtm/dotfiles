@@ -10,19 +10,17 @@ Plugin 'gmarik/vundle'
   Plugin 'junegunn/fzf.vim'
   Plugin 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   Plugin 'tomasr/molokai'
-" End Plugins
-
+  Plugin 'nvie/vim-flake8'
+  Plugin 'ambv/black'
+  Plugin 'davidhalter/jedi-vim'
+"End Plugins
 call vundle#end()
 filetype plugin indent on
 " End Vundle
 
 " Begin UI
-colorscheme molokai
+colorscheme monokai
 syntax enable
-
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 set autoindent
 set autoread
@@ -35,7 +33,6 @@ set linebreak
 set mouse=a " enable mouse support
 set number
 set pastetoggle=<F5>
-set relativenumber
 set ruler
 set showcmd
 set showmatch
@@ -55,7 +52,6 @@ nnoremap \ ,
 let NERDTreeIgnore=['\.pyc$', '\~$']
 map <C-n> :NERDTreeToggle<CR>
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree ~/doverhq | endif
 autocmd BufWinEnter * NERDTreeMirror
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " End NERDTree
@@ -75,11 +71,6 @@ set scrolloff=5
 nnoremap <leader><space> :nohlsearch<CR>
 " End Search
 
-" Begin FZF
-command! -bang DoverFiles call fzf#vim#files('~/doverhq', <bang>0)
-nnoremap <silent> <Leader><Leader> :DoverFiles<CR>
-" End FZF
-
 " Begin Folding
 set foldenable
 set foldlevelstart=99
@@ -90,6 +81,8 @@ nnoremap <space> za
 " Begin Movement
 nnoremap j gj
 nnoremap k gk
+imap jk <Esc>
+
 " End Movement
 
 " Begin Whitespace

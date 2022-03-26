@@ -21,7 +21,6 @@ alias lt="$LS_BASE -gltr"
 alias ls="ls -FG"
 
 
-#verbose file utils 
 alias mvv='nocorrect mv -iv'
 alias rmm='nocorrect rm -Iv' # -I to prompt when more than 3 files
 
@@ -52,7 +51,7 @@ $GIT_BASE branch | grep -v 'master$' | grep -v $REMOTE_BRANCHES | xargs $GIT_BAS
 alias clone="$GIT_BASE clone"
 
 # commit
-alias ca="$GIT_BASE commit -v --amend"
+alias ca="$GIT_BASE commit -v --amend --no-edit"
 alias cm="$GIT_BASE commit -v"
 
 # checkout
@@ -64,10 +63,9 @@ alias d="$GIT_BASE diff --name-status"
 alias dd="$GIT_BASE diff"
 
 # log
-alias gl="$GIT_BASE log --oneline"
+alias gl="$GIT_BASE log --graph --oneline --pretty=format:'%Cred%h%Creset - %C(yellow)%s%Creset %C(green)<%an>%Creset %C(blue)@%d%Creset' --abbrev-commit"
 # l used for ls
 alias gll="$GIT_BASE log"
-alias glgd="$GIT_BASE log --graph --decorate"
 alias glp="$GIT_BASE log -p"
 
 # push
@@ -77,7 +75,7 @@ alias push="$GIT_BASE push"
 alias re="$GIT_BASE rebase"
 
 # pull
-alias pull="$GIT_BASE pull --rebase"
+alias pull="$GIT_BASE pull"
 
 # status
 alias st="$GIT_BASE status"
@@ -126,22 +124,23 @@ eval ${KSH_CMD}
 
 # Dev tools
 # Shells
-function mis_base {
-color 20 00 00
-./manage.py shell_plus --ipython $@
-reset_color
-}
-
-alias mis="mis_base --print-sql"
-
-
 # Pytest
 alias it='pytest -rEf --ds config.settings.integration_test -m integration -s --no-cov --reuse-db'
 alias ut='pytest -rEf --no-cov --ds config.settings.test -m "not integration" -s'
 
-#ssh 
+#ssh
 alias keyup='. ssh-agent-init;ssh-keychain-init'
-
 # Shell tools
+alias hq='~hq'
+alias sendle='~hq/sendle'
+alias courierexpress='~hq/courier_express'
+alias carrierops='~hq/carrierops'
+
+DEV_VM='gautams-dev-vm.gpappu.devvm.easypo.net'
+BASTION_HOST='gpappu@admin.dev.easypo.net'
+
+alias easyssh="ssh -A vagrant@$DEV_VM"
+alias easybastion="ssh -A -J $BASTION_HOST vagrant@$DEV_VM"
+
 alias aliases="vim ~d/aliases"
 alias reload="source ~/dotfiles/.zshrc"
