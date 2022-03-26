@@ -1,7 +1,7 @@
 
 zstyle :compinstall filename "$HOME/.zshrc"
 
-export ZSH="/Users/gpappu/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 fpath+=$HOME/.zsh/pure
