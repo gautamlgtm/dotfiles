@@ -138,9 +138,12 @@ alias carrierops='~hq/carrierops'
 
 DEV_VM='gautams-dev-vm.gpappu.devvm.easypo.net'
 BASTION_HOST='gpappu@admin.dev.easypo.net'
+ADMIN_HOST='gpappu@admin.easypo.net'
 
+alias prodssh='ssh -A $ADMIN_HOST'
 alias easyssh="ssh -A vagrant@$DEV_VM"
 alias easybastion="ssh -A -J $BASTION_HOST vagrant@$DEV_VM"
+alias easytunnel="ssh -L 1080:proxy.local.easypo.net:1080 -N -C ${BASTION_HOST}"
 
 alias aliases="vim ~d/aliases"
 alias reload="source ~/dotfiles/.zshrc"

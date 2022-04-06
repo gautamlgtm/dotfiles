@@ -32,6 +32,9 @@ plugins=(
     fast-syntax-highlighting
     zsh-256color
     zsh-autosuggestions
+    arcanist
+    autopep8
+    alias-tips
 )
 
 
@@ -53,10 +56,7 @@ unsetopt sharehistory
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
-bindkey -e
-bindkey "^U" backward-kill-line
-bindkey "^X^_" redo
-bindkey "^[f" vi-forward-word-end
+bindkey -v
 
 function pet-select() {
   BUFFER=$(pet search --query "$LBUFFER")

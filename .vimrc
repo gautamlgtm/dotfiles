@@ -12,7 +12,6 @@ Plugin 'gmarik/vundle'
   Plugin 'tomasr/molokai'
   Plugin 'nvie/vim-flake8'
   Plugin 'ambv/black'
-  Plugin 'davidhalter/jedi-vim'
 "End Plugins
 call vundle#end()
 filetype plugin indent on
