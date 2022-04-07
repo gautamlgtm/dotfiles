@@ -34,7 +34,6 @@ plugins=(
     zsh-autosuggestions
     arcanist
     autopep8
-    alias-tips
 )
 
 
@@ -69,7 +68,6 @@ stty -ixon
 bindkey '^s' pet-select
 
 export TERM=xterm-256color
-
 
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 

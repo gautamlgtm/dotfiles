@@ -1,30 +1,46 @@
-" Begin Vundle
-set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'gmarik/vundle'
+" Create file without opening buffer
+function! CreateInPreview()
+  let l:filename = input('please enter filename: ')
+  execute 'silent !touch ' . b:netrw_curdir.'/'.l:filename
+  redraw!
+endfunction
 
-" Begin Plugins
-  Plugin 'junegunn/fzf'
-  Plugin 'junegunn/fzf.vim'
-  Plugin 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-  Plugin 'nvie/vim-flake8'
-  Plugin 'ambv/black'
-  Plugin 'fisadev/vim-isort'
-  Plugin 'Lokaltog/powerline'                 " Powerline fonts plugin
-  Plugin 'Valloric/YouCompleteMe'             " Autocomplete plugin
-  Plugin 'jmcantrell/vim-virtualenv'
-"End Plugins
-call vundle#end()
-filetype plugin indent on
-" End Vundle
+" Netrw: create file using touch instead of opening a buffer
+function! Netrw_mappings()
+  noremap <buffer>% :call CreateInPreview()<cr>
+endfunction
 
-" Begin UI
+augroup auto_commands
+    autocmd filetype netrw call Netrw_mappings()
+augroup END
+
+call plug#begin()
+    " Appearance
+    Plug 'vim-airline/vim-airline'
+    Plug 'ryanoasis/vim-devicons'
+
+    " Utilities
+    Plug 'sheerun/vim-polyglot'
+    Plug 'jiangmiao/auto-pairs'
+    Plug 'ap/vim-css-color'
+    Plug 'preservim/nerdtree'
+
+    "Python Plugs"
+    Plug 'psf/black', { 'branch': 'main' }
+    Plug 'fisadev/vim-isort'
+    Plug 'neoclide/coc.nvim'
+
+    " Completion / linters / formatters
+    Plug 'plasticboy/vim-markdown'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+call plug#end()
+
+let g:black_linelength = 120
+let g:black_skip_string_normalization = 1
+
 syntax enable
-let macvim_skip_colorscheme=1
 
-let python_highlight_all=1
 set autoindent
 set autoread
 set backspace=indent,eol,start
@@ -44,8 +60,7 @@ set title
 set ttyfast
 set visualbell
 set wrap
-autocmd BufWritePost *.py :!isort %
-let s:available_short_python = ':py3'
+
 nnoremap gV `[v`]
 :let mapleader = ","
 nnoremap \ ,
@@ -86,6 +101,7 @@ nnoremap <space> za
 nnoremap j gj
 nnoremap k gk
 imap jk <Esc>
+nnoremap <silent> <C-f> :Files<CR>
 
 " End Movement
 

@@ -4,21 +4,6 @@
     email = gpappu@easypost.com
     name = Gautam Pappu
 
-[alias]
-    br = branch
-    ci = commit
-    co = checkout
-    st = status
-    # list files
-    ls = ls-files
-    # list deleted files
-    lsd = ls-files --deleted
-    # remove deleted files
-    rmd = !git rm `git ls-files --deleted`
-    master = checkout master
-    gh-pages = checkout gh-pages
-    dsf = "!f() { [ \"$GIT_PREFIX\" != \"\" ] && cd "$GIT_PREFIX"; git diff --color $@ | diff-so-fancy | less --tabs=4 -RFX; }; f"
-
 [pager]
 #    diff = diff-so-fancy | less --tabs=4 -RFX
 #    show = diff-so-fancy | less --tabs=4 -RFX
@@ -30,7 +15,7 @@
     default = simple
 
 [color]
-	ui = true
+    ui = true
     branch = auto
     diff = auto
     status = auto
@@ -41,14 +26,11 @@
     remote = green
 
 [color "diff"]
-	meta = 11
-	frag = magenta bold
-	old = red bold
-	new = green bold
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
     context = white
-	func = 146 bold
-	commit = yellow bold
-	whitespace = red reverse
 
 [color "status"]
     added = yellow
@@ -60,12 +42,3 @@
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
     required = true
-[core]
-	pager = diff-so-fancy | less --tabs=4 -RFX
-[interactive]
-	diffFilter = diff-so-fancy --patch
-[color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
