@@ -99,7 +99,6 @@ function exit_venv {
 }
 
 
-
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export PYTHONBREAKPOINT=ipdb.set_trace
@@ -121,10 +120,15 @@ export GOROOT="/usr/local/go"
 #Homebrew
 export PATH="$HOME/homebrew/bin:$PATH"
 
+if [[ ! -e $HOME/easypost ]]; then
+    mkdir $HOME/easypost
+fi
+
 #easypost
 export PATH="$HOME/easypost/ssh-scripts:$PATH"
 hash -d hq="$HOME/easypost"
 
-
 #GOSETUP
 export GOROOT="/usr/local/go"
+
+source ~hq/venv/bin/activate
