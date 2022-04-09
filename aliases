@@ -131,6 +131,8 @@ alias it='pytest -rEf --ds config.settings.integration_test -m integration -s --
 alias ut='pytest -rEf --no-cov --ds config.settings.test -m "not integration" -s'
 
 #ssh
+#
+
 alias keyup='. ssh-agent-init;ssh-keychain-init'
 alias hq='~hq'
 alias sendle='~hq/sendle'
@@ -142,10 +144,10 @@ DEV_VM='gautams-dev-vm.gpappu.devvm.easypo.net'
 BASTION_HOST='admin.dev.easypo.net'
 ADMIN_HOST='admin.easypo.net'
 
+
 alias prodssh='ssh -A $EP_USER@$ADMIN_HOST'
 alias easyssh="ssh -A vagrant@$DEV_VM -t zsh"
 alias easybastion="ssh -A -J $EP_USER@BASTION_HOST vagrant@$DEV_VM -t zsh"
 alias easytunnel="ssh -L 1080:proxy.local.easypo.net:1080 -N -C $EP_USER@{BASTION_HOST}"
 
-alias aliases="vim ~d/aliases"
 alias reload="source ~/dotfiles/.zshrc"

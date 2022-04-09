@@ -1,24 +1,12 @@
 " Create file without opening buffer
-function! CreateInPreview()
-  let l:filename = input('please enter filename: ')
-  execute 'silent !touch ' . b:netrw_curdir.'/'.l:filename
-  redraw!
-endfunction
-
-" Netrw: create file using touch instead of opening a buffer
-function! Netrw_mappings()
-  noremap <buffer>% :call CreateInPreview()<cr>
-endfunction
-
-augroup auto_commands
-    autocmd filetype netrw call Netrw_mappings()
-augroup END
 
 call plug#begin()
     " Appearance
     Plug 'vim-airline/vim-airline'
     Plug 'ryanoasis/vim-devicons'
-
+    Plug 'bryanmylee/vim-colorscheme-icons'
+    Plug 'mhinz/vim-startify'
+    Plug 'crusoexia/vim-monokai'
     " Utilities
     Plug 'sheerun/vim-polyglot'
     Plug 'jiangmiao/auto-pairs'
@@ -28,7 +16,9 @@ call plug#begin()
     "Python Plugs"
     Plug 'psf/black', { 'branch': 'main' }
     Plug 'fisadev/vim-isort'
-    Plug 'neoclide/coc.nvim'
+    Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
+    Plug 'psliwka/vim-smoothie'
+
 
     " Completion / linters / formatters
     Plug 'plasticboy/vim-markdown'
@@ -38,15 +28,18 @@ call plug#end()
 
 let g:black_linelength = 120
 let g:black_skip_string_normalization = 1
-
+let g:python_host_prog = '/Users/gautampappu/easypost/venv/bin/python3' 
 syntax enable
 
+set guifont
 set autoindent
 set autoread
 set backspace=indent,eol,start
 set cursorline
-set encoding=utf-8
+autocmd VimEnter * hi CursorLine cterm=underline
+autocmd VimEnter * hi CursorLine gui=underline
 set laststatus=2
+set encoding=UTF-8
 set lazyredraw
 set linebreak
 set mouse=a " enable mouse support
@@ -54,7 +47,6 @@ set number
 set pastetoggle=<F5>
 set ruler
 set showcmd
-set showmatch
 set showmode
 set title
 set ttyfast
@@ -64,6 +56,15 @@ set wrap
 nnoremap gV `[v`]
 :let mapleader = ","
 nnoremap \ ,
+
+let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 1
+let g:airline_section_z = ' %{strftime("%-I:%M %p")}'
+let g:airline_section_warning = ''
+"let g:airline#extensions#tabline#enabled = 1 " Uncomment to display buffer tabline above
+""
+let $BAT_THEME='base16'
+
 
 " End UI
 
@@ -100,15 +101,15 @@ nnoremap <space> za
 " Begin Movement
 nnoremap j gj
 nnoremap k gk
-imap jk <Esc>
+vnoremap jk <Esc>
+inoremap jk <Esc>
 nnoremap <silent> <C-f> :Files<CR>
-
+nnoremap <silent><C-i> :Isort<CR>
+nnoremap <silent><C-b> :Black<CR>
 " End Movement
 
 " Begin Whitespace
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-autocmd BufWritePre * :%s/\s\+$//e
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=white guibg=white
 " End Whitespace
 
 " Begin Completion
@@ -118,3 +119,5 @@ inoremap {<CR> {<CR>}<Esc>ko
 " Begin Clipboard
 vnoremap <C-C> "+y
 " End Clipboard
+
+colorscheme monokai
