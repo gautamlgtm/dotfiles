@@ -1,15 +1,13 @@
 # This can be copied to ~/.gitconfig for some common git settings and aliases
-
 [user]
     email = gpappu@easypost.com
     name = Gautam Pappu
 
-[pager]
-#    diff = diff-so-fancy | less --tabs=4 -RFX
-#    show = diff-so-fancy | less --tabs=4 -RFX
-
 [pull]
     rebase = true
+
+[apply]
+	  whitespace = fix
 
 [push]
     default = simple
@@ -30,12 +28,11 @@
     frag = magenta bold
     old = red bold
     new = green bold
-    context = white
 
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
+	added = green bold
+	changed = yellow
+	untracked = cyan
 
 [filter "lfs"]
     clean = git-lfs clean -- %f
@@ -45,4 +42,8 @@
 
 [log]
     excludeDecoration = refs/tags/phabricator/*
+    decorate = short
+
+[merge]
+    log = true
 

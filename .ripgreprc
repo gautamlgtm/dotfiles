@@ -8,3 +8,9 @@
 -g=!**/src/services/openapi
 -g=!**/src/services/swaggerapi
 -g=!**/src/services/swaggerapianon
+
+--colors=line:style:bold
+--colors=path:fg:green
+--colors=path:style:bold
+--colors=match:fg:red
+--colors=match:style:nobold 

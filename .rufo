@@ -1,0 +1,40 @@
+# Whether to put a space after an array bracket. Valid values are:
+#
+# * :dynamic: if there's a space, keep it. If not, don't add it
+# * :always: always put a space after an array bracket (default)
+# * :never: never put a space after an array bracket
+spaces_inside_array_bracket :never
+
+# Whether to put a space after a hash brace. Valid values are:
+#
+# * :dynamic: if there's a space, keep it. If not, don't add it (default)
+# * :always: always put a space after a hash brace
+# * :never: never put a space after a hash brace
+spaces_inside_hash_brace :always
+
+# Whether to align successive comments (default: false)
+align_comments true
+
+# Whether to align successive assignments (default: false)
+align_assignments false
+
+# Whether to align successive hash keys(default: false)
+align_hash_keys false
+
+# Whether to align successive case when (default: false)
+align_case_when true
+
+# Whether to align chained calls to the first dot in the first line (default: false)
+align_chained_calls false
+
+# The indent size (default: 2)
+indent_size 2
+
+# Whether to place commas at the end of a multi-line list
+#
+# * :dynamic: if there's a comma, keep it. If not, don't add it (default)
+# * :always: always put a comma
+# * :never: never put a comma
+trailing_commas :never
+
+parens_in_def :yes 

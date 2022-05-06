@@ -1,9 +1,9 @@
 # Basic utilities
 # grep
-alias grep='grep --color=auto'
-alias rgg="rg -g '!*test*'"
-alias pg="rg -g '*\.py'"
-alias pgg="rgg -g '*\.py'"
+alias grep='grep -i --color=auto'
+alias rgg="rg -g '!*test* -g '!*spec*'"
+alias pg="rg -g '*\.py' -g '*\.rb'"
+alias pgg="rgg -g '*\.py' -g '*\.rb'"
 
 # find process
 alias pf="ps aux | grep"
@@ -20,15 +20,16 @@ alias lS="$LS_BASE -glS --color=auto"
 alias lt="$LS_BASE -gltr --color=auto"
 alias ls="ls -FG --color=auto"
 
-
+#replacements
 alias mvv='nocorrect mv -iv'
 alias rmm='nocorrect rm -Iv' # -I to prompt when more than 3 files
+alias cat='bat'
+alias man='tldr'
 
 
 # vim
 alias v='nvim'
 alias vi='nvim'
-alias vim='nvim'
 
 # which
 alias w='which'
@@ -42,8 +43,8 @@ alias add="$GIT_BASE add"
 alias ap="$GIT_BASE add --intent-to-add . && $GIT_BASE add -p"
 
 # branch
-alias branch="$GIT_BASE branch"
 alias br="$GIT_BASE branch"
+
 function brd {
 REMOTE_BRANCHES="$($GIT_BASE ls-remote --heads | awk '{print $2}' | cut -c 12-)"
 $GIT_BASE branch | grep -v 'master$' | grep -v $REMOTE_BRANCHES | xargs $GIT_BASE branch -D
@@ -57,7 +58,7 @@ alias ca="$GIT_BASE commit -v --amend --no-edit"
 alias cm="$GIT_BASE commit -v"
 
 # checkout
-alias co="$GIT_BASE checkout"
+alias co="fzf-git-checkout"
 alias ma="$GIT_BASE checkout master"
 
 # diff
@@ -65,16 +66,29 @@ alias d="$GIT_BASE diff --name-status"
 alias dd="$GIT_BASE diff"
 
 # log
-alias gl="$GIT_BASE log --graph --oneline --pretty=format:'%Cred%h%Creset - %C(yellow)%s%Creset %C(green)<%an>%Creset %C(blue)@%d%Creset' --abbrev-commit"
+alias gl="$GIT_BASE log --oneline --pretty=format:'%C(Green)%h %C(red)%an %C(blue)%cr %C(cyan)%s'"
 # l used for ls
 alias gll="$GIT_BASE log"
 alias glp="$GIT_BASE log -p"
+alias blame="$GIT_BASE blame"
+alias refs='$GIT_BASE reflog'
 
 # push
 alias push="$GIT_BASE push"
 
 # rebase
 alias re="$GIT_BASE rebase"
+
+#rename branch
+function branch-rename {
+    # renames the local branch and on ALL remotes
+    $GIT_BASE branch -m $1 $2
+    for remote in $(git remote)
+    do
+        $GIT_BASE push $remote -u $2
+        $GIT_BASE push $remote --delete $1
+    done
+}
 
 # pull
 alias pull="$GIT_BASE pull"
@@ -88,6 +102,9 @@ alias show="$GIT_BASE show"
 # stashing
 alias stash="$GIT_BASE stash"
 alias pop="$GIT_BASE stash pop"
+
+# reflog
+alias reflog='git reflog --pretty=raw | tig --pretty=raw'
 
 # reset
 alias reset="$GIT_BASE reset"
@@ -125,29 +142,46 @@ eval ${KSH_CMD}
 
 
 # Dev tools
-# Shells
+
+# Password Tools
+ONEPASS_BASE='1pass'
+alias oplogin="$ONEPASS_BASE -rv"
+alias opls='$ONEPASS_BASE -l'
+
+function opfind {
+    echo $($ONEPASS_BASE -l |grep "$1")
+}
+
+function opgp {
+    declare input=$(opfind omni) < /dev/stdin ; opgp $input
+}
+
 # Pytest
 alias it='pytest -rEf --ds config.settings.integration_test -m integration -s --no-cov --reuse-db'
 alias ut='pytest -rEf --no-cov --ds config.settings.test -m "not integration" -s'
 
-#ssh
-#
+#networking
+alias localip="sudo ifconfig | grep -Eo 'inet (addr:)?([0-9]*\\.){3}[0-9]*' | grep -Eo '([0-9]*\\.){3}[0-9]*' | grep -v '127.0.0.1'"
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
 
+#ssh
 alias keyup='. ssh-agent-init;ssh-keychain-init'
 alias hq='~hq'
-alias sendle='~hq/sendle'
-alias courierexpress='~hq/courier_express'
-alias carrierops='~hq/carrierops'
 
 EP_USER='gpappu'
-DEV_VM='gautams-dev-vm.gpappu.devvm.easypo.net'
+DEV_VM='gautam-breaks-things.gpappu.devvm.easypo.net'
 BASTION_HOST='admin.dev.easypo.net'
 ADMIN_HOST='admin.easypo.net'
 
-
-alias prodssh='ssh -A $EP_USER@$ADMIN_HOST'
-alias easyssh="ssh -A vagrant@$DEV_VM -t zsh"
-alias easybastion="ssh -A -J $EP_USER@BASTION_HOST vagrant@$DEV_VM -t zsh"
 alias easytunnel="ssh -L 1080:proxy.local.easypo.net:1080 -N -C $EP_USER@{BASTION_HOST}"
+alias syncup='rsync-up.sh; fswatch -o . | while read f; do rsync-up.sh; done'
+
+function devbox() {
+	ssh dev -t 'tmux -CC new-session -A -s epdevbox' 2>&1
+}
+
+function adminbox() {
+	ssh admin -t 'tmux -CC new-session -A -s prodserver' 2>&1
+}
 
 alias reload="source ~/dotfiles/.zshrc"
