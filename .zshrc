@@ -166,3 +166,6 @@ else
 fi
 
 echo ".zshrc file loaded successfully for $USER"
+
+# opam configuration
+[[ ! -r /Users/gautampappu/.opam/opam-init/init.zsh ]] || source /Users/gautampappu/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null

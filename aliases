@@ -1,7 +1,7 @@
 # Basic utilities
 # grep
 alias grep='grep -i --color=auto'
-alias rgg="rg -g '!*test* -g '!*spec*'"
+alias rgg="rg -g '!*test*' -g '!*spec*'"
 alias pg="rg -g '*\.py' -g '*\.rb'"
 alias pgg="rgg -g '*\.py' -g '*\.rb'"
 
@@ -20,10 +20,17 @@ alias lS="$LS_BASE -glS --color=auto"
 alias lt="$LS_BASE -gltr --color=auto"
 alias ls="ls -FG --color=auto"
 
+#exa stuff
+alias xa='exa --long --icons --git'
+
 #replacements
-alias mvv='nocorrect mv -iv'
-alias rmm='nocorrect rm -Iv' # -I to prompt when more than 3 files
+alias mv='mv -iv'
+alias rmm='rm -Iv' # -I to prompt when more than 3 files
 alias cat='bat'
+alias bd='batdiff'
+alias bgrep='batgrep'
+
+#manpage
 alias man='tldr'
 
 

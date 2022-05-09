@@ -2,15 +2,20 @@
 --max-columns-preview
 
 --smart-case
+--hidden
+--follow
 
 -g=!*.chunk.js
 -g=!*.chunk.js.map
 -g=!**/src/services/openapi
 -g=!**/src/services/swaggerapi
 -g=!**/src/services/swaggerapianon
+-g=!node_modules/*
+
+
 
 --colors=line:style:bold
 --colors=path:fg:green
 --colors=path:style:bold
---colors=match:fg:red
+--colors=match:fg:cyan
 --colors=match:style:nobold 

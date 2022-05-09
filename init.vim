@@ -1,7 +1,7 @@
-
 call plug#begin()
     " Appearance
-    Plug 'vim-airline/vim-airline'
+ Plug 'vwxyutarooo/nerdtree-devicons-syntax'
+	Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'ryanoasis/vim-devicons'
     Plug 'bryanmylee/vim-colorscheme-icons'
@@ -19,7 +19,6 @@ call plug#begin()
     Plug 'ambv/black', { 'branch': 'main' }
     Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
     Plug 'psliwka/vim-smoothie'
-
 
     " Completion / linters / formatters
     Plug 'plasticboy/vim-markdown'
