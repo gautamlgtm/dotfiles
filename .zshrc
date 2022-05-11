@@ -38,6 +38,7 @@ plugins=(
     zsh-autosuggestions
     arcanist
     autopep8
+    aws
     fzf
 )
 
@@ -75,7 +76,7 @@ export TERM=xterm-256color
 
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=246"
 
-export EDITOR=vim
+export EDITOR=nvim
 
 if [ -f ~/dotfiles/aliases ]; then
     . ~/dotfiles/aliases
@@ -107,7 +108,7 @@ function exit_venv {
   fi
 }
 
-bindkey -v
+bindkey -e
 bindkey '^R' history-incremental-search-backward
 
 export FD_OPTIONS="--follow --exclude .git --exclude node_modules"
@@ -169,3 +170,10 @@ echo ".zshrc file loaded successfully for $USER"
 
 # opam configuration
 [[ ! -r /Users/gautampappu/.opam/opam-init/init.zsh ]] || source /Users/gautampappu/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Created by `pipx` on 2022-05-15 10:20:13
+export PATH="$PATH:/Users/gautampappu/.local/bin"
