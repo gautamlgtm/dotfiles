@@ -78,6 +78,8 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=246"
 
 export EDITOR=nvim
 
+hash -d d="$HOME/dotfiles"
+
 if [ -f ~/dotfiles/aliases ]; then
     . ~/dotfiles/aliases
 fi
@@ -118,27 +120,21 @@ export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-i
 export PYTHONBREAKPOINT=ipdb.set_trace
 
 #dotfiles
-hash -d d="$HOME/dotfiles"
 
 #easypost
 if [ -d ~/ssh-setup ]; then
     export PATH="$HOME/ssh-setup:$PATH"
 fi
 
-hash -d hq="$HOME/easypost"
-
 
 #GOSETUP
 export GOROOT="/usr/local/go"
 
-#Homebrew
-export PATH="$HOME/homebrew/bin:$PATH"
-
-if [[ ! -e $HOME/easypost ]]; then
+if [[ -z $HOME/easypost ]]; then
     mkdir $HOME/easypost
-    source ~hq/venv/bin/activate
+    source ~hq/easypost_hq/bin/activate
 else
-    source ~hq/venv/bin/activate
+    source ~hq/easypost_hq/bin/activate
 fi
 
 #easypost ssh setup
@@ -167,13 +163,3 @@ else
 fi
 
 echo ".zshrc file loaded successfully for $USER"
-
-# opam configuration
-[[ ! -r /Users/gautampappu/.opam/opam-init/init.zsh ]] || source /Users/gautampappu/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Created by `pipx` on 2022-05-15 10:20:13
-export PATH="$PATH:/Users/gautampappu/.local/bin"

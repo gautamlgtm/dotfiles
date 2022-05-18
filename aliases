@@ -191,4 +191,4 @@ function adminbox() {
 	ssh admin -t 'tmux -CC new-session -A -s prodserver' 2>&1
 }
 
-alias reload="source ~/dotfiles/.zshrc"
+alias reloadzsh="source ~/dotfiles/.zshrc"
