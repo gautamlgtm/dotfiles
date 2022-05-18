@@ -8,9 +8,15 @@ Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
+Plug 'Lokaltog/vim-easymotion', { 'on': ['<Plug>(easymotion-s)'] }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'vim-scripts/CSApprox'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'danielsiepmann/neotags'
+
+
+
 
 "*****************************************************************************
 "" Appearance
@@ -57,7 +63,7 @@ Plug 'mattn/emmet-vim'
 "" Python Bundle
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 Plug 'psliwka/vim-smoothie'
-
+Plug 'numirias/semshi'
 
 " ruby
 Plug 'tpope/vim-rails'
@@ -77,16 +83,49 @@ Plug 'prabirshrestha/asyncomplete.vim'
 
 " Asyncomplete lsp.vim
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'jbyuki/dash.nvim'
 
 "*****************************************************************************
 "*****************************************************************************
 call plug#end()
 
 
+" =============================================================================
+" COC
+" =============================================================================
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+let g:coc_global_extensions = ['coc-solargraph', 'coc-highlight', 'coc-python', 'coc-yaml', 'coc-html', 'coc-css', 'coc-json',  'coc-xml', 'coc-snippets', 'coc-tsserver', 'coc-prettier', 'coc-flutter', 'coc-explorer', 'coc-markdownlint', 'coc-db', 'coc-yank']
+let g:coc_snippet_next = '<tab>'
+let g:coc_status_error_sign = ' '
+let g:coc_status_warning_sign = ' '
+
+let g:coc_explorer_global_presets = {
+      \   'floating': {
+      \      'position': 'floating',
+      \   },
+      \   'floatingTop': {
+      \     'position': 'floating',
+      \     'floating-position': 'center-top',
+      \   },
+      \   'floatingLeftside': {
+      \      'position': 'floating',
+      \      'floating-position': 'left-center',
+      \      'floating-width': 50,
+      \   },
+      \   'floatingRightside': {
+      \      'position': 'floating',
+      \      'floating-position': 'left-center',
+      \      'floating-width': 50,
+      \   },
+      \   'simplify': {
+      \     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+      \   }
+      \ }
 "*****************************************************************************
 "" Basic Setup
 "*****************************************************************************"
 "" Encoding
+let g:python3_host_prog = '$HOME/easypost/easypost_hq/bin/python3'
 filetype plugin indent on
 set encoding=UTF-8
 set ttyfast
@@ -169,6 +208,7 @@ let g:airline_skip_empty_sections = 1
 
 "" NERDTree configuration
 let g:NERDTreeChDirMode=2
+let g:NERDTreeShowHidden=1
 let g:NERDTreeIgnore=['node_modules','\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
 let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
 let g:NERDTreeShowBookmarks=1
@@ -313,7 +353,7 @@ noremap <leader>c :bd<CR>
 nnoremap <silent> <leader><space> :noh<cr>
 
 "" Switching windows
-noremap <C-j> <C-w>j
+no:ch:cheremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 noremap <C-h> <C-w>h
@@ -351,11 +391,13 @@ augroup END
 let g:ale_python_flake8_options = '--max-line-length=120'
 let g:ale_fixers = {
             \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-            \   'python': ['darker', 'flake8'],
+            \   'python': ['black', 'flake8'],
             \   'javascript': ['eslint'],
             \   'ruby': ['rubocop'],
             \}
 let g:ale_fix_on_save = 1
+set autoread
+autocmd BufWritePost *.py silent :!darker %
 
 " vim-airline
 let g:airline#extensions#virtualenv#enabled = 1
@@ -409,8 +451,6 @@ vnoremap <leader>rrlv :RRenameLocalVariable<cr>
 vnoremap <leader>rriv :RRenameInstanceVariable<cr>
 vnoremap <leader>rem  :RExtractMethod<cr>
 
-"python host prog"
-let g:python3_host_prog = '$HOME/easypost/venv/bin/python'
 
 "*****************************************************************************
 "" Convenience variables
