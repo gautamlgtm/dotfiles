@@ -24,13 +24,13 @@
     remote = green
 
 [color "diff"]
-    meta = yellow bold
-    frag = magenta bold
-    old = red bold
-    new = green bold
+    meta = yellow
+    frag = red
+    old = magenta
+    new = green
 
 [color "status"]
-	added = green bold
+	added = green
 	changed = yellow
 	untracked = cyan
 
@@ -46,4 +46,3 @@
 
 [merge]
     log = true
-

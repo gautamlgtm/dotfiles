@@ -65,7 +65,7 @@ alias ca="$GIT_BASE commit -v --amend --no-edit"
 alias cm="$GIT_BASE commit -v"
 
 # checkout
-alias co="fzf-git-checkout"
+alias co="$GIT_BASE checkout"
 alias ma="$GIT_BASE checkout master"
 
 # diff
@@ -191,4 +191,6 @@ function adminbox() {
 	ssh admin -t 'tmux -CC new-session -A -s prodserver' 2>&1
 }
 
+hash -d d="$HOME/dotfiles"
+hash -d hq="$HOME/easypost"
 alias reloadzsh="source ~/dotfiles/.zshrc"
