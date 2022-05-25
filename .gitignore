@@ -17,7 +17,7 @@ compile_commands.json
 /.ccls-cache/
 /.clang-tidy
 
-.DS_Store
+*.DS_Store*
 *.mo
 .*.sw?
 *~
@@ -74,4 +74,3 @@ tags
 # vim patches
 /vim-*.patchvscode ignore
 .vscode/settings.json
-

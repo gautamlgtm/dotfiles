@@ -3,20 +3,30 @@
     email = gpappu@easypost.com
     name = Gautam Pappu
 
-[pull]
-    rebase = true
-
 [apply]
-	  whitespace = fix
+    whitespace=fix
 
-[push]
-    default = simple
+[pager]
+    diff = diff-so-fancy | less --tabs=4
+    word = diff-so-fancy | less --tabs=4
 
 [color]
-    ui = true
-    branch = auto
-    diff = auto
-    status = auto
+    pager = true
+    ui = auto
+    status=auto
+    diff=auto
+    showBranch=auto
+    interactive=auto
+    grep=auto
+
+[color "status"]
+    header = black bold
+    branch = cyan
+    nobranch=red
+    unmerged=red
+    untracked=magenta
+    added=green
+    changed = yellow bold
 
 [color "branch"]
     current = yellow reverse
@@ -24,15 +34,25 @@
     remote = green
 
 [color "diff"]
-    meta = yellow
-    frag = red
-    old = magenta
-    new = green
+    meta = magenta
+    frag = black bold
 
-[color "status"]
-	added = green
-	changed = yellow
-	untracked = cyan
+[color "diff"]
+    branch = green bold
+    remoteBranch = magenta bold
+    tag = magenta bold
+    stash = cyan
+    HEAD = cyan bold
+
+[pull]
+    rebase = true
+
+[apply]
+	  whitespace = fix
+
+[push]
+    default = matching
+    followTags=True
 
 [filter "lfs"]
     clean = git-lfs clean -- %f

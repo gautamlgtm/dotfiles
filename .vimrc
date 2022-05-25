@@ -22,8 +22,6 @@ filetype plugin indent on
 
 " Begin UI
 syntax enable
-let macvim_skip_colorscheme=1
-
 let python_highlight_all=1
 set autoindent
 set autoread
@@ -44,6 +42,7 @@ set title
 set ttyfast
 set visualbell
 set wrap
+set noswapfile
 autocmd BufWritePost *.py :!isort %
 let s:available_short_python = ':py3'
 nnoremap gV `[v`]
@@ -102,3 +101,5 @@ inoremap {<CR> {<CR>}<Esc>ko
 " Begin Clipboard
 vnoremap <C-C> "+y
 " End Clipboard
+
+colorscheme molokai

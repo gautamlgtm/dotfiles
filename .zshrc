@@ -4,7 +4,7 @@ export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 fpath+=$HOME/.zsh/pure
-autoload -U promptinit; promptinit
+autoload -Uz promptinit; promptinit
 prompt pure
 
 zmodload zsh/nearcolor
@@ -16,7 +16,6 @@ zstyle :prompt:pure:git:branch color red
 zstyle :prompt:pure:status show
 
 setopt EXTENDEDGLOB
-
 for dump in $ZSH_COMPDUMP(#qN.m1); do
   compinit
   if [[ -s "$dump" && (! -s "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
@@ -28,11 +27,7 @@ done
 unsetopt EXTENDEDGLOB
 compinit -C
 
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
-export FZF_DEFAULT_OPTS='--height 50% --layout=reverse --border'
-
 plugins=(
-    git
     fast-syntax-highlighting
     mysql-colorize
     zsh-autosuggestions
@@ -50,7 +45,7 @@ plugins=(
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:opt/homebrew/bin:$PATH"
 
 HISTFILE=~/.histfile
 HISTSIZE=100000
@@ -88,22 +83,6 @@ if [ -f ~/dotfiles/.functions ]; then
     . ~/dotfiles/.functions
 fi
 
-if [ -f ~/dotfiles/.functions ]; then
-    . ~/dotfiles/.functions
-fi
-
-function color {
-    echo -n -e "\033]Ph$1$2$3\033\\"
-}
-
-function reset_color {
-    color 00 00 00
-}
-
-function textcolor {
-    printf "\x1b[38;5;$1m$($@[2,-1])\x1b[0m\n"
-}
-
 function exit_venv {
   if [[ "$VIRTUAL_ENV" != "" ]] ; then
     deactivate
@@ -129,17 +108,18 @@ fi
 
 #GOSETUP
 export GOROOT="/usr/local/go"
+export LDFLAGS="-I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib"
 
-if [[ -z $HOME/easypost ]]; then
-    mkdir $HOME/easypost
+if [ -n $(pwd | \grep -o 'easypost') ]; then
+    echo "We are in an easypost directory" \
+    "sourcing virtualenv"
     source ~hq/easypost_hq/bin/activate
 else
-    source ~hq/easypost_hq/bin/activate
+    echo 'not in ep directory'
 fi
 
 #easypost ssh setup
 export PATH="$HOME/easypost/ssh-scripts:$PATH"
-hash -d hq="$HOME/easypost"
 
 #GOSETUP
 export GOROOT="/usr/local/go"
@@ -157,9 +137,9 @@ else
   echo "No need to setup ssh-agent, already in server"
 fi
 if [ -f /usr/local/etc/1pass/bash_completion.sh ]; then
-	source /usr/local/etc/1pass/bash_completion.sh
+    source /usr/local/etc/1pass/bash_completion.sh
 else
-	echo "Please configure onepassword cli"
+    echo "Please configure onepassword cli"
 fi
 
 echo ".zshrc file loaded successfully for $USER"

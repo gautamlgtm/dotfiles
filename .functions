@@ -7,7 +7,7 @@
 			sed 's#^remotes/##'
 	}
 
-	fzf-git-branch() {
+fzf-git-branch() {
     git rev-parse HEAD > /dev/null 2>&1 || return
 
     git branch --color=always --all --sort=-committerdate |
@@ -37,7 +37,7 @@ fzf-git-checkout() {
     fi
 }
 
-function ii()   # get current host related info
+function hostinfo()   # get current host related info
 {
   echo -e "\nYou are logged on ${RED}$HOSTNAME"
   echo -e "\nAdditionnal information:$NC " ; uname -a
@@ -49,4 +49,12 @@ function ii()   # get current host related info
   echo -e "\n${RED}Local IP Address :$NC" ; echo ${MY_IP:-"Not connected"}
   echo -e "\n${RED}ISP Address :$NC" ; echo ${MY_ISP:-"Not connected"}
   echo
+}
+
+function tail() {
+    if [ $# -eq 0 ]; then
+        echo "Provide file"
+    else
+        tail -f "$@" | bat --paging=never -l log;
+    fi;
 }

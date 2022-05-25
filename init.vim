@@ -1,5 +1,4 @@
 ﻿set nocompatible
-
 call plug#begin()
 
 Plug 'junegunn/fzf.vim'
@@ -58,7 +57,6 @@ Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 Plug 'psliwka/vim-smoothie'
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
-k
 
 
 " ruby

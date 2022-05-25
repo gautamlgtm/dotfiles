@@ -28,7 +28,7 @@ alias cat='bat'
 alias mv='mv -iv'
 alias rmm='rm -Iv'
 alias bd='batdiff'
-alias bgrep='batgrep'
+alias grep='batgrep'
 
 #manpage
 alias man='tldr'
@@ -54,7 +54,7 @@ alias br="$GIT_BASE branch"
 
 function brd {
 REMOTE_BRANCHES="$($GIT_BASE ls-remote --heads | awk '{print $2}' | cut -c 12-)"
-$GIT_BASE branch | grep -v 'master$' | grep -v $REMOTE_BRANCHES | xargs $GIT_BASE branch -D
+SE branch | grep -v 'master$' | grep -v $REMOTE_BRANCHES | xargs $GIT_BASE branch -D
 }
 
 # clone
@@ -66,6 +66,7 @@ alias cm="$GIT_BASE commit -v"
 
 # checkout
 alias co="$GIT_BASE checkout"
+alias cb="$GIT_BASE checkout -b"
 alias ma="$GIT_BASE checkout master"
 
 # diff
@@ -78,7 +79,7 @@ alias gl="$GIT_BASE log --oneline --pretty=format:'%C(Green)%h %C(red)%an %C(blu
 alias gll="$GIT_BASE log"
 alias glp="$GIT_BASE log -p"
 alias blame="$GIT_BASE blame"
-alias refs='$GIT_BASE reflog'
+alias gf='$GIT_BASE reflog'
 
 # push
 alias push="$GIT_BASE push"
@@ -173,7 +174,6 @@ alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GE
 
 #ssh
 alias keyup='. ssh-agent-init;ssh-keychain-init'
-alias hq='~hq'
 
 EP_USER='gpappu'
 DEV_VM='gautam-breaks-things.gpappu.devvm.easypo.net'
@@ -181,16 +181,17 @@ BASTION_HOST='admin.dev.easypo.net'
 ADMIN_HOST='admin.easypo.net'
 
 alias easytunnel="ssh -L 1080:proxy.local.easypo.net:1080 -N -C $EP_USER@{BASTION_HOST}"
-alias syncup='rsync-up.sh; fswatch -o . | while read f; do rsync-up.sh; done'
 
 function devbox() {
 	ssh dev -t 'tmux -CC new-session -A -s epdevbox' 2>&1
 }
 
 function adminbox() {
-	ssh admin -t 'tmux -CC new-session -A -s prodserver' 2>&1
+	ssh admin -t 'tmux -CC new-session -A -s epadmin' 2>&1
 }
 
 hash -d d="$HOME/dotfiles"
 hash -d hq="$HOME/easypost"
+
+alias hq='~hq'
 alias reloadzsh="source ~/dotfiles/.zshrc"

@@ -1,0 +1,69 @@
+   # EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Code files
+[*.{cs,csx,vb,vbx}]
+indent_size = 4
+insert_final_newline = true
+charset = utf-8-bom
+
+[*.xml]
+indent_size = 4
+
+# JSON files
+[*.json]
+indent_size = 2
+
+
+# Shell script files
+[*.sh]
+end_of_line = lf
+indent_size = 2
+
+# Applies to all Markdown files
+[*.md]
+trim_trailing_whitespace = false
+
+[*.py]
+indent_style = space
+indent_size = 4
+max_line_length = 120
+
+[*.rb]
+indent_size = 2
+
+[*.html]
+charset = utf-8
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*{.glsl,.go,.sh,.sql}]
+indent_style = tab
+
+[{Dockerfile,Dockerfile.template.erb,Dockerfile.sample}]
+indent_style = space
+indent_size = 4
+
+[{fluent.conf,fluent.conf.erb}]
+indent_style = space
+indent_size = 2
+
+[{*.bats,post_push,post_push.erb}]
+indent_style = space
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
