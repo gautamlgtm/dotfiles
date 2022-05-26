@@ -13,22 +13,24 @@ alias fp="lsof -aPi -p"
 alias p='ipython'
 
 # ls
-LS_BASE="ls -AFGh --color=always"
-alias l="$LS_BASE "
-alias ll="$LS_BASE -gl "
-alias lS="$LS_BASE -glS"
-alias lt="$LS_BASE -glt"
-alias ls="ls -FG "
+# LS_BASE="ls -AFGh --color=always"
+# alias l="$LS_BASE"
+# alias ll="$LS_BASE -gl"
+# alias lS="$LS_BASE -glS"
+# alias lt="$LS_BASE -glt"
+# alias ls="ls -FG "
 
-#exa stuff
-alias xa='exa --long --icons --git --extended'
+#new ls stuff
+EXA_BASE="exa --icons --long --color=always --reverse"
+alias ll="$EXA_BASE --all"
+alias lt="$EXA_BASE --all --sort=changed"
+alias lS="$EXA_BASE --all --sort=size"
+alias la="$EXA_BASE --all --sort=accessed"
+alias ls="$EXA_BASE"
+alias lx="$EXA_BASE --sort=ext"
+alias l="exa --grid --all"
+alias lpy="$EXA_BASE | grep r'*.py'"
 
-#replacements
-alias cat='bat'
-alias mv='mv -iv'
-alias rmm='rm -Iv'
-alias bd='batdiff'
-alias grep='batgrep'
 
 #manpage
 alias man='tldr'
@@ -151,6 +153,10 @@ eval ${KSH_CMD}
 
 # Dev tools
 
+function virtualenv_info {
+    [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
+}
+
 # Password Tools
 ONEPASS_BASE='1pass'
 alias oplogin="$ONEPASS_BASE -rv"
@@ -194,4 +200,13 @@ hash -d d="$HOME/dotfiles"
 hash -d hq="$HOME/easypost"
 
 alias hq='~hq'
-alias reloadzsh="source ~/dotfiles/.zshrc"
+
+#replacements
+alias cat='bat'
+alias mv='mv -iv'
+alias rmm='rm -Iv'
+alias bd='batdiff'
+alias pb='prettybat'
+alias bw='batwatch'
+
+alias reload="source ~/.zshrc"

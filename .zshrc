@@ -15,17 +15,6 @@ zstyle :prompt:pure:user color white
 zstyle :prompt:pure:git:branch color red
 zstyle :prompt:pure:status show
 
-setopt EXTENDEDGLOB
-for dump in $ZSH_COMPDUMP(#qN.m1); do
-  compinit
-  if [[ -s "$dump" && (! -s "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
-    zcompile "$dump"
-  fi
-  echo "Initializing Completions..."
-done
-
-unsetopt EXTENDEDGLOB
-compinit -C
 
 plugins=(
     fast-syntax-highlighting
@@ -38,7 +27,17 @@ plugins=(
 )
 
 
+setopt EXTENDEDGLOB
+for dump in $ZSH_COMPDUMP(#qN.m1); do
+  compinit
+  if [[ -s "$dump" && (! -s "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
+    zcompile "$dump"
+  fi
+  echo "Initializing Completions..."
+done
 
+unsetopt EXTENDEDGLOB
+compinit -C
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
@@ -75,9 +74,6 @@ export EDITOR=nvim
 
 hash -d d="$HOME/dotfiles"
 
-if [ -f ~/dotfiles/aliases ]; then
-    . ~/dotfiles/aliases
-fi
 
 if [ -f ~/dotfiles/.functions ]; then
     . ~/dotfiles/.functions
@@ -93,12 +89,14 @@ bindkey -e
 bindkey '^R' history-incremental-search-backward
 
 export FD_OPTIONS="--follow --exclude .git --exclude node_modules"
-export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
-export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || bat {}) 2> /dev/null | head -300' --preview-window='right:hidden:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)'"
-export PYTHONBREAKPOINT=ipdb.set_trace
 
-#dotfiles
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
+
+export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || bat {}) 2> /dev/null | head -300' --preview-window='right:hidden:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)'"
+
+export PYTHONBREAKPOINT=ipdb.set_trace
 
 #easypost
 if [ -d ~/ssh-setup ]; then
@@ -110,13 +108,21 @@ fi
 export GOROOT="/usr/local/go"
 export LDFLAGS="-I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib"
 
-if [ -n $(pwd | \grep -o 'easypost') ]; then
-    echo "We are in an easypost directory" \
-    "sourcing virtualenv"
-    source ~hq/easypost_hq/bin/activate
-else
-    echo 'not in ep directory'
+if [ -f ~/dotfiles/aliases ]; then
+    . ~/dotfiles/aliases
 fi
+
+function color {
+    echo -n -e "\033]Ph$1$2$3\033\\"
+}
+
+function reset_color {
+    color 00 00 00
+}
+
+function textcolor {
+    printf "\x1b[38;5;$1m$($@[2,-1])\x1b[0m\n"
+}
 
 #easypost ssh setup
 export PATH="$HOME/easypost/ssh-scripts:$PATH"
@@ -129,10 +135,12 @@ source ~/.iterm2_shell_integration.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+
 #initialize ssh keys
 if [ -z "$SSH_CLIENT" ] || [ -z "SSH_TTY" ];
 then
-  keyup 2>/dev/null
+    eval $(/opt/homebrew/bin/brew shellenv)
+    keyup 2>/dev/null
 else
   echo "No need to setup ssh-agent, already in server"
 fi

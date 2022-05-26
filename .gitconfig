@@ -6,12 +6,7 @@
 [apply]
     whitespace=fix
 
-[pager]
-    diff = diff-so-fancy | less --tabs=4
-    word = diff-so-fancy | less --tabs=4
-
 [color]
-    pager = true
     ui = auto
     status=auto
     diff=auto
