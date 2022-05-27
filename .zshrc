@@ -80,7 +80,7 @@ if [ -f ~/dotfiles/.functions ]; then
 fi
 
 function exit_venv {
-  if [[ "$VIRTUAL_ENV" != "" ]] ; then
+  if [[ -n "$VIRTUAL_ENV" ]] ; then
     deactivate
   fi
 }
@@ -102,7 +102,6 @@ export PYTHONBREAKPOINT=ipdb.set_trace
 if [ -d ~/ssh-setup ]; then
     export PATH="$HOME/ssh-setup:$PATH"
 fi
-
 
 #GOSETUP
 export GOROOT="/usr/local/go"
@@ -134,7 +133,6 @@ export GOROOT="/usr/local/go"
 source ~/.iterm2_shell_integration.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 
 #initialize ssh keys
 if [ -z "$SSH_CLIENT" ] || [ -z "SSH_TTY" ];
