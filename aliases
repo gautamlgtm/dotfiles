@@ -13,30 +13,18 @@ alias fp="lsof -aPi -p"
 alias p='ipython'
 
 # ls
-# LS_BASE="ls -AFGh --color=always"
-# alias l="$LS_BASE"
-# alias ll="$LS_BASE -gl"
-# alias lS="$LS_BASE -glS"
-# alias lt="$LS_BASE -glt"
-# alias ls="ls -FG "
+ LS_BASE="ls -AFGh --color=always"
+ alias l="$LS_BASE"
+ alias ll="$LS_BASE -gl"
+ alias lS="$LS_BASE -glS"
+ alias lt="$LS_BASE -glt"
+ alias ls="ls -FG "
 
-#new ls stuff
-EXA_BASE="exa --icons --long --color=always --reverse"
-alias ll="$EXA_BASE --all"
-alias lt="$EXA_BASE --all --sort=changed"
-alias lS="$EXA_BASE --all --sort=size"
-alias la="$EXA_BASE --all --sort=accessed"
-alias ls="$EXA_BASE"
-alias lx="$EXA_BASE --sort=ext"
-alias l="exa --grid --all"
-alias lpy="$EXA_BASE | grep r'*.py'"
-
-
-#manpage
+# manpage
 alias man='tldr'
 
 
-# vim
+# just use neovim
 alias v='nvim'
 alias vi='nvim'
 
@@ -63,6 +51,7 @@ SE branch | grep -v 'master$' | grep -v $REMOTE_BRANCHES | xargs $GIT_BASE branc
 alias clone="$GIT_BASE clone"
 
 # commit
+alias cam="$GIT_BASE commit -v --amend"
 alias ca="$GIT_BASE commit -v --amend --no-edit"
 alias cm="$GIT_BASE commit -v"
 

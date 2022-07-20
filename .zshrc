@@ -3,26 +3,15 @@ export FZF_BASE="$HOME/.fzf"
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
-fpath+=$HOME/.zsh/pure
-autoload -Uz promptinit; promptinit
-prompt pure
-
-zmodload zsh/nearcolor
-zstyle :prompt:pure:path color cyan
-zstyle :prompt:pure:virtualenv color green
-zstyle :prompt:pure:host color white
-zstyle :prompt:pure:user color white
-zstyle :prompt:pure:git:branch color red
-zstyle :prompt:pure:status show
-
+# init prompt
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+eval "$(oh-my-posh --init --shell zsh --config ~/.mytheme.omp.json)"
+oh-my-posh config export --output ~/.mytheme.omp.json
+enable_poshtooltips
 
 plugins=(
     fast-syntax-highlighting
-    mysql-colorize
     zsh-autosuggestions
-    arcanist
-    autopep8
-    aws
     fzf
 )
 
@@ -142,6 +131,7 @@ then
 else
   echo "No need to setup ssh-agent, already in server"
 fi
+
 if [ -f /usr/local/etc/1pass/bash_completion.sh ]; then
     source /usr/local/etc/1pass/bash_completion.sh
 else
@@ -149,3 +139,7 @@ else
 fi
 
 echo ".zshrc file loaded successfully for $USER"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

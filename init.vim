@@ -1,25 +1,38 @@
 ﻿set nocompatible
-call plug#begin()
 
+call plug#begin()
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-
+Plug 'zef/vim-cycle'
+Plug 'romainl/vim-cool'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
+Plug 'scrooloose/nerdcommenter'
 Plug 'danielsiepmann/neotags'
+Plug 'rbong/vim-crystalline'
 Plug 'tpope/vim-commentary'
+Plug 'scrooloose/syntastic'
+Plug 'ervandew/supertab'
+Plug 'myusuf3/numbers.vim'
+Plug 'sjl/gundo.vim'
 Plug 'jameshiew/nvim-magic'
+Plug 'mhinz/vim-startify'
+Plug 'prettier/vim-prettier' , { 'do': 'yarn install' }
 
 "*****************************************************************************
 "" Appearance
 "*****************************************************************************
-"
+" tasklist
+Plug 'vim-scripts/TaskList.vim'
+
 " Aesthetics - Colorschemes
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'zaki/zazen'
 Plug 'yuttie/hydrangea-vim'
 
 " Aesthetics - Others
+Plug 'easymotion/vim-easymotion'
+Plug 'wellle/targets.vim'
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'phanviet/vim-monokai-pro'
 Plug 'crusoexia/vim-monokai'
@@ -31,19 +44,17 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'Raimondi/delimitMate'
 Plug 'majutsushi/tagbar'
 
-"ALE func
-Plug 'dense-analysis/ale'
-Plug 'Yggdroot/indentLine'
-Plug 'editor-bootstrap/vim-bootstrap-updater'
-Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
-
-" Sensuble defaults
+" Sensible defaults
 Plug 'tpope/vim-sensible'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 "*****************************************************************************
-"" Custom bundles
+
 "*****************************************************************************
+Plug 'tpope/vim-unimpaired'
+Plug 'honza/vim-snippets'
+
+" To enable more features of rust-analyzer, you can use the following plugin:
 
 " html
 "" HTML Bundle
@@ -53,40 +64,121 @@ Plug 'tpope/vim-haml'
 Plug 'mattn/emmet-vim'
 
 "" Python Bundle
+Plug 'sbdchd/neoformat'
+Plug 'Guzzii/python-syntax'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 Plug 'psliwka/vim-smoothie'
 Plug 'jmcantrell/vim-virtualenv'
-Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
+Plug 'psf/black', { 'branch': 'stable' }
+Plug 'heavenshell/vim-pydocstring'
+Plug 'brentyi/isort.vim'
 
+" Fuzzy finder
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
-" ruby
-Plug 'tpope/vim-rails'
-Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rake'
-Plug 'tpope/vim-projectionist'
-Plug 'thoughtbot/vim-rspec'
-Plug 'racer-rust/vim-racer'
-Plug 'prabirshrestha/async.vim'
+" Jinja syntax highlighting
+Plug 'lepture/vim-jinja'
 
+" editorconfig
+Plug 'https://github.com/editorconfig/editorconfig-vim.git'
+
+" multiple cursors
+Plug 'terryma/vim-multiple-cursors'
 call plug#end()
+
+let g:isort_vim_options = join([
+    \ '--multi-line 8',
+    \ '--force-grid-wrap 0',
+    \ '--use-parentheses',
+    \ '--ensure-newline-before-comments',
+    \ '--line-length 120',
+    \ ], ' ')
+
+"
+" For all text files set 'textwidth' to 80
+autocmd Filetype text setlocal textwidth=80
+
+nnoremap <silent> ;f <cmd>Telescope find_files<cr>
+nnoremap <silent> ;r <cmd>Telescope live_grep<cr>
+nnoremap <silent> \\ <cmd>Telescope buffers<cr>
+nnoremap <silent> ;; <cmd>Telescope help_tags<cr>
+
+"
+augroup IsortMappings
+    autocmd!
+    autocmd Filetype python nnoremap <buffer> <leader>si :call :Isort<CR>
+    autocmd Filetype python vnoremap <buffer> <leader>si :call :Isort<CR>
+augroup END
+
+augroup black_on_save
+    autocmd!
+    autocmd BufWritePre *.py Black
+augroup END
+
+"
+"*****************************************************************************
+" Vim color highlighting
+""*****************************************************************************
+"let g:Hexokinase_highlighters = ['virtual']
+" let g:Hexokinase_virtualText = [▩]
+"
+
+" *****************************************************************************
+" Format Options
+" *****************************************************************************
+set formatoptions=qrn1c
 
 "*****************************************************************************
 "" Basic Setup
 "*****************************************************************************"
 "" Encoding
-let g:python3_host_prog = '/home/vagrant/easypost/easypost_hq/bin/python'
 filetype plugin indent on
+set signcolumn=yes
+set ttimeoutlen=0
+set backup
 set encoding=UTF-8
 set ttyfast
 set backspace=indent,eol,start
-"" Tabs. May be overridden by autocmd rules
+set cindent
 set tabstop=4
 set shiftwidth=4
+set textwidth=80
 set expandtab
+set showmatch
 set noswapfile
+set fileencoding=utf-8
+set fileencodings=utf-8,ucs-boms,euc-jp,cp932
+set completeopt=menu,preview,noinsert
+set noshowmode
+set emoji
+set re=1
+set autochdir
+set cmdheight=1
+
+"*****************************************************************************
+"Visual Display Settings
+"*****************************************************************************
+set nu
+:autocmd InsertEnter * set cul
+:autocmd InsertLeave * set nocul
+
+"*****************************************************************************
+" Automatic resizing buffers
+"
+augroup on_vim_resized
+    autocmd!
+    autocmd VimResized * wincmd
+augroup END
+
+""******************************************************************************
+" Custom Mappings
+" ***************************************************************************
+noremap <leader>H :set hlsearch!<CR>
 
 "" Map leader to ,
 let mapleader=','
+let localleader='\\'
 
 "" Enable hidden buffers
 set hidden
@@ -102,28 +194,49 @@ set showmatch
 set lazyredraw
 set cursorline
 set autoread
+set mouse=v
+
+"" the essentials
+nnoremap ; :
+nmap \ <leader>q
+map <F6> :Startify <CR>
+nmap <leader>q :bd<CR>
+nmap <S-Tab> :bnext<CR>
+nmap <S-Tab> :bprevious<CR>
+noremap <leader>e :PlugInstall <CR>
+noremap <C-q> :q<CR>
+inoremap <leader>d <C-R>=strftime('%Y-%m-%d')<CR>
+
+" edit config file
+command! Edrc edit $MYVIMRC
+
+" useful utilities
+nmap <leader>' ysiw'
+nmap <leader>" ysiw'
 
 " underline cursor
 autocmd VimEnter * hi CursorLine cterm=underline
 autocmd VimEnter * hi CursorLine gui=underline
 
 "*****************************************************************************
-"" Visual Settings
+"" Other Visual Settings
 "*****************************************************************************
 syntax enable
+set showmatch
+set cc=120
 set ruler
 set number
 set wrap
 let no_buffers_menu=1
 set wildmenu
-set mouse=a
 set mousemodel=popup
 set termguicolors
 set gfn=Hack\ 10
 let g:vim_bootstrap_langs = "html,python,ruby"
-
+set fileformat=unix
 
 set scrolloff=5
+set infercase
 
 "" Status bar
 set laststatus=2
@@ -134,13 +247,55 @@ if exists("*fugitive#statusline")
     set statusline+=%{fugitive#statusline()}
 endif
 
+"" startify
+let g:startify_default_theme = 'dark'
+let g:startify_session_peresistence = 1
+let g:startify_enable_special = 0
+let g:startify_files_number = 8
+let g:startify_update_oldfiles= 1
+
+"" semshi settings
+let g:semshi#error_sign = v:false
+
 " vim-airline
-let g:airline_theme = 'base16_material'
+let g:airline_theme = 'bubblegum'
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
+
+" neoformat
+let g:neomake_python_enabled_markers = ['flake8']
+let g:neoformat_enabled_python = ['black']
+let g:neoformat_node_exe = 1
+au BufWritePost *.py :Neoformat
+
+" Deodeplete
+let g:deodeplete#enable_at_startup = 1
+
+" multiple cursors
+let g:multi_cursor_use_default_bindings = 1
+let g:multi_cursor_start_key = '<c-n>'
+let g:multi_cursor_next_key = '<tab>'
+let g:multi_cursor_prev_key = 'b'
+let g:multi_cursor_skip_key = 'x'
+let g:multi_cursor_quit_key = 'q'
+
+" format js
+autocmd BufWritePre *.js Neoformat
+
+" select pasted text
+nnoremap <expr> gp '`[' , strpart(getregtype(), 0, 1) . ']`'
+nnoremap <leader>s :set invspell <CR>
+
+" python folding
+set foldmethod=indent
+set foldlevel=99
+set autoindent
+set expandtab
+set smarttab
 
 "*****************************************************************************
 "" Abbreviations
@@ -173,22 +328,6 @@ imap <S-Tab> <Esc><<i
 nmap <S-tab> <<
 
 "*****************************************************************************
-"" Commands
-"*****************************************************************************
-
-" Trim Whitespaces
-function! TrimWhitespace()
-    let l:save = winsaveview()
-    %s/\\\@<!\s\+$//e
-    call winrestview(l:save)
-endfunction
-
-:map <Tab> <C-R>TrimWhitespace()<CR>
-
-nnoremap <leader><Tab> <C-u>call TrimWhiteSpace()<CR>
-"*****************************************************************************
-"" Commands
-"*****************************************************************************
 " remove trailing whitespaces
 command! FixWhitespace :%s/\s\+$//e
 
@@ -210,7 +349,9 @@ augroup END
 noremap <Leader>h :<C-u>split<CR>
 noremap <Leader>v :<C-u>vsplit<CR>
 
-"" Tabs
+" ***************************************************************************
+" Tabs
+" ***************************************************************************
 nnoremap <silent> <S-t> :tabnew<CR>
 nnoremap <Tab> gt
 nnoremap <S-Tab> gT
@@ -218,12 +359,53 @@ nnoremap <S-Tab> gT
 "" fzf.vim
 set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
+let $FZF_DEFAULT_OPTS = '--height=50% --layout=reverse --inline-info --preview="bat --line {}" --preview-window=right:70%'
 let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
+nmap <leader>b :Buffers<CR>
+nmap <leader>c :Commands<CR>
+nmap <leader>t :BTags<CR>
+nmap <leader>/ :Rg<CR>
+nmap <leader>sh :History:<CR>
+let g:fzf_colors =
+            \ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
-nnoremap <silent> <leader>b :Buffers<CR>
-nmap <leader>y :History:<CR>
+let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' }}
+let g:fzf_tags_command = 'ctags -R'
 
-" Tagbar
+" "******************************************************************************
+" Buffer Switching
+" ******************************************************************************
+nnoremap <leader>1 :1b<CR>
+nnoremap <leader>2 :2b<CR>
+nnoremap <leader>3 :3b<CR>
+nnoremap <leader>4 :4b<CR>
+
+" "******************************************************************************
+" Copy/Paste
+" ******************************************************************************
+nmap <leader>y "+y
+nmap <leader>Y "+yq
+nmap <leader>p "+p
+
+augroup fzf
+    autocmd!
+    autocmd! Filetype fzf
+    autocmd Filetype fzf set laststatus=0 noshowmode noruler
+                \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+augroup END
+
 nmap <silent> <F4> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
 
@@ -280,60 +462,19 @@ augroup END
 
 " vim-airline
 let g:airline#extensions#virtualenv#enabled = 1
+let g:airline#extensions#virtualenv#prefix = '🐍'
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:bufferline_echo = 0
 
+"Gundo
+nnoremap <F5> :GundoToggle <CR>
 " Syntax highlight
 let python_highlight_all = 1
-
-" ruby
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
-
-augroup vimrc-ruby
-    autocmd!
-    autocmd BufNewFile,BufRead *.rb,*.rbw,*.gemspec setlocal filetype=ruby
-    autocmd FileType ruby set tabstop=2|set shiftwidth=2|set expandtab softtabstop=2
-augroup END
-
-let g:tagbar_type_ruby = {
-            \ 'kinds' : [
-                \ 'm:modules',
-                \ 'c:classes',
-                \ 'd:describes',
-                \ 'C:contexts',
-                \ 'f:methods',
-                \ 'F:singleton methods'
-                \ ]
-                \ }
-
-" RSpec.vim mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
-
-" For ruby refactory
-if has('nvim')
-    runtime! macros/matchit.vim
-else
-    packadd! matchit
-endif
-
-" Ruby refactory
-nnoremap <leader>rap  :RAddParameter<cr>
-nnoremap <leader>rcpc :RConvertPostConditional<cr>
-nnoremap <leader>rel  :RExtractLet<cr>
-vnoremap <leader>rec  :RExtractConstant<cr>
-vnoremap <leader>relv :RExtractLocalVariable<cr>
-nnoremap <leader>rit  :RInlineTemp<cr>
-vnoremap <leader>rrlv :RRenameLocalVariable<cr>
-vnoremap <leader>rriv :RRenameInstanceVariable<cr>
-vnoremap <leader>rem  :RExtractMethod<cr>
 
 "*****************************************************************************
 "" Convenience variables
 "*****************************************************************************
-
 let g:tagbar_type_r = {
             \ 'ctagstype' : 'r',
             \ 'kinds'     : [
@@ -368,8 +509,15 @@ if executable('rg')
     command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 endif
 
+"*****************************************************************************
+"" Markdown
+"*****************************************************************************
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_fenced_languages = ['tsx=typescriptreact']
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_folding_frontmatter = 1
 nnoremap <silent> <leader>b :Buffers<CR>
-nnoremap <silent> <C-r> :Rg<CR>
+nnoremap <silent> <C-s> :Rg<CR>
 nnoremap <silent> <C-f> :FZF -m<CR>
 
 "Recovery commands from history through FZF
@@ -404,6 +552,11 @@ nnoremap <silent> <leader><space> :noh<cr>
 vmap < <gv
 vmap > >gv
 
+" Easymotion
+hi EasyMotionTarget ctermfg=9 guifg=red
+hi EasyMotionTarget2First cterm=underline ctermfg=9 guifg=red
+hi EasyMotionTarget2Second cterm=underline ctermfg=9 guifg=lightred
+hi link EasyMotionShade Comment
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
@@ -421,28 +574,6 @@ augroup vimrc-python
                 \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
-" ale
-" flake8 options
-let g:ale_python_flake8_options = '--max-line-length=120'
-" black options
-let g:ale_python_black_options = '--skip-string-normalization'
-let g:ale_linters = {
-            \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-            \   'python': ['flake8', 'pylint'],
-            \   'javascript': ['eslint'],
-            \   'ruby': ['rubocop'],
-            \}
-
-let g:ale_fixers = {
-            \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-            \   'python': ['autopep8', 'yapf'],
-            \   'javascript': ['eslint'],
-            \   'ruby': ['rufo'],
-            \}
-
-let g:ale_fix_on_save = 1
-
-" vim-airline
 let g:airline#extensions#virtualenv#enabled = 1
 
 " Syntax highlight
@@ -459,7 +590,6 @@ augroup vimrc-ruby
     autocmd FileType ruby set tabstop=2|set shiftwidth=2|set expandtab softtabstop=2
 augroup END
 
-
 "*****************************************************************************
 "" Convenience variables
 "*****************************************************************************
@@ -472,10 +602,9 @@ let g:tagbar_type_r = {
                 \ ]
                 \ }
 
-
 autocmd vimenter * hi Comment term=bold cterm=NONE ctermfg=Darkgrey ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
 autocmd vimenter * hi Statement term=bold cterm=NONE ctermfg=Darkgrey ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
 autocmd vimenter * hi function term=bold cterm=NONE ctermfg=Darkgrey ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
 
 set background=dark
-colorscheme molokai
+colorscheme monokai
