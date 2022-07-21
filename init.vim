@@ -1,29 +1,9 @@
 ﻿set nocompatible
 
 call plug#begin()
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'zef/vim-cycle'
-Plug 'romainl/vim-cool'
-Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'scrooloose/nerdcommenter'
-Plug 'danielsiepmann/neotags'
-Plug 'rbong/vim-crystalline'
-Plug 'tpope/vim-commentary'
-Plug 'scrooloose/syntastic'
-Plug 'ervandew/supertab'
-Plug 'myusuf3/numbers.vim'
-Plug 'sjl/gundo.vim'
-Plug 'jameshiew/nvim-magic'
-Plug 'mhinz/vim-startify'
-Plug 'prettier/vim-prettier' , { 'do': 'yarn install' }
-
+*****************************************************************************
+"" Theme/UX
 "*****************************************************************************
-"" Appearance
-"*****************************************************************************
-" tasklist
-Plug 'vim-scripts/TaskList.vim'
 
 " Aesthetics - Colorschemes
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -44,18 +24,48 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'Raimondi/delimitMate'
 Plug 'majutsushi/tagbar'
 
-" Sensible defaults
-Plug 'tpope/vim-sensible'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 "*****************************************************************************
-
+"" Language Support
 "*****************************************************************************
-Plug 'tpope/vim-unimpaired'
-Plug 'honza/vim-snippets'
+Plug 'sbdchd/neoformat'
+Plug 'dense-analysis/ale'
+Plug 'preservim/nerdcommenter'
+if has ("nvim-0.5")
+    Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+endif
+Plug 'luochen1990/rainbow'
+Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 
-" To enable more features of rust-analyzer, you can use the following plugin:
+******************************************************************************
+"" File Nav
+"*****************************************************************************
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'laher/fuzzymenu.vim'
+Plug 'scrooloose/nerdtree' {'on': 'NerdTreeToggle'}
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'jistr/vim-nerdtree-tabs'
 
+******************************************************************************
+"" Others
+"*****************************************************************************
+Plug 'zef/vim-cycle'
+Plug 'romainl/vim-cool'
+Plug 'scrooloose/nerdcommenter'
+Plug 'danielsiepmann/neotags'
+Plug 'rbong/vim-crystalline'
+Plug 'tpope/vim-commentary'
+Plug 'scrooloose/syntastic'
+Plug 'ervandew/supertab'
+Plug 'myusuf3/numbers.vim'
+Plug 'sjl/gundo.vim'
+Plug 'jameshiew/nvim-magic'
+Plug 'mhinz/vim-startify'
+Plug 'prettier/vim-prettier' , { 'do': 'yarn install' }
+
+"
+"
 " html
 "" HTML Bundle
 Plug 'hail2u/vim-css3-syntax'
@@ -64,7 +74,6 @@ Plug 'tpope/vim-haml'
 Plug 'mattn/emmet-vim'
 
 "" Python Bundle
-Plug 'sbdchd/neoformat'
 Plug 'Guzzii/python-syntax'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 Plug 'psliwka/vim-smoothie'
@@ -88,12 +97,12 @@ Plug 'terryma/vim-multiple-cursors'
 call plug#end()
 
 let g:isort_vim_options = join([
-    \ '--multi-line 8',
-    \ '--force-grid-wrap 0',
-    \ '--use-parentheses',
-    \ '--ensure-newline-before-comments',
-    \ '--line-length 120',
-    \ ], ' ')
+            \ '--multi-line 8',
+            \ '--force-grid-wrap 0',
+            \ '--use-parentheses',
+            \ '--ensure-newline-before-comments',
+            \ '--line-length 120',
+            \ ], ' ')
 
 "
 " For all text files set 'textwidth' to 80
@@ -104,25 +113,27 @@ nnoremap <silent> ;r <cmd>Telescope live_grep<cr>
 nnoremap <silent> \\ <cmd>Telescope buffers<cr>
 nnoremap <silent> ;; <cmd>Telescope help_tags<cr>
 
-"
-augroup IsortMappings
+" Neoformat
+let g:neomake_python_enabled_markers = ['flake8']
+let g:neoformat_enabled_python = ['black', 'isort']
+let g:neoformat_try_formatprg = 1
+let g:neoformat_node_exe = 1
+let g:neoformat_basic_format_align = 1
+let g:neoformat_basic_format_retab = 1
+let g:neoformat_basic_format_trim = 1
+
+
+"neoformat
+augroup NeoformatAutoFormat
     autocmd!
-    autocmd Filetype python nnoremap <buffer> <leader>si :call :Isort<CR>
-    autocmd Filetype python vnoremap <buffer> <leader>si :call :Isort<CR>
+    autocmd Filetype javascript setlocal formatprg = prettier
+    autocmd Filetype python setlocal formatprg = black
+    autocmd BufWritePre *.py Neoformat
+    autocmd BufWritePre *js Neoformat
 augroup END
 
-augroup black_on_save
-    autocmd!
-    autocmd BufWritePre *.py Black
-augroup END
+nnoremap <silent> <leader>B :Neoformat<CR>
 
-"
-"*****************************************************************************
-" Vim color highlighting
-""*****************************************************************************
-"let g:Hexokinase_highlighters = ['virtual']
-" let g:Hexokinase_virtualText = [▩]
-"
 
 " *****************************************************************************
 " Format Options
@@ -135,80 +146,57 @@ set formatoptions=qrn1c
 "" Encoding
 filetype plugin indent on
 set signcolumn=yes
-set ttimeoutlen=0
-set backup
-set encoding=UTF-8
-set ttyfast
-set backspace=indent,eol,start
-set cindent
+set number
+set softtabstop=4
 set tabstop=4
 set shiftwidth=4
-set textwidth=80
+set ttimeoutlen=0
 set expandtab
+set cursorline
+set shortmess=a
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+set backspace=indent,eol,start
+set scrolloff=5
+set undofile
+set encoding=UTF-8
 set showmatch
+set ttyfast
+set cindent
+set showmatch
+set autoread
 set noswapfile
-set fileencoding=utf-8
-set fileencodings=utf-8,ucs-boms,euc-jp,cp932
 set completeopt=menu,preview,noinsert
-set noshowmode
 set emoji
 set re=1
 set autochdir
 set cmdheight=1
+set wrap
+set title
+set mouse=v
+set hidden
 
-"*****************************************************************************
-"Visual Display Settings
-"*****************************************************************************
-set nu
-:autocmd InsertEnter * set cul
-:autocmd InsertLeave * set nocul
 
-"*****************************************************************************
-" Automatic resizing buffers
-"
-augroup on_vim_resized
-    autocmd!
-    autocmd VimResized * wincmd
-augroup END
+"Auto Whitespace Trimming!"
+fun! TrimWhiteSpace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+autocmd BufWritePre * :call TrimWhiteSpace()
+
+set clipboard+=unnamed
+
+"leader key
+let mapleader=','
 
 ""******************************************************************************
 " Custom Mappings
 " ***************************************************************************
 noremap <leader>H :set hlsearch!<CR>
 
-"" Map leader to ,
-let mapleader=','
-let localleader='\\'
-
-"" Enable hidden buffers
-set hidden
-
-"" Searching
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-set wrap
-set title
-set showmatch
-set lazyredraw
-set cursorline
-set autoread
-set mouse=v
-
-"" the essentials
-nnoremap ; :
-nmap \ <leader>q
-map <F6> :Startify <CR>
-nmap <leader>q :bd<CR>
-nmap <S-Tab> :bnext<CR>
-nmap <S-Tab> :bprevious<CR>
-noremap <leader>e :PlugInstall <CR>
-noremap <C-q> :q<CR>
-inoremap <leader>d <C-R>=strftime('%Y-%m-%d')<CR>
-
-" edit config file
-command! Edrc edit $MYVIMRC
 
 " useful utilities
 nmap <leader>' ysiw'
@@ -257,20 +245,6 @@ let g:startify_update_oldfiles= 1
 "" semshi settings
 let g:semshi#error_sign = v:false
 
-" vim-airline
-let g:airline_theme = 'bubblegum'
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline_skip_empty_sections = 1
-
-" neoformat
-let g:neomake_python_enabled_markers = ['flake8']
-let g:neoformat_enabled_python = ['black']
-let g:neoformat_node_exe = 1
-au BufWritePost *.py :Neoformat
 
 " Deodeplete
 let g:deodeplete#enable_at_startup = 1
@@ -283,8 +257,6 @@ let g:multi_cursor_prev_key = 'b'
 let g:multi_cursor_skip_key = 'x'
 let g:multi_cursor_quit_key = 'q'
 
-" format js
-autocmd BufWritePre *.js Neoformat
 
 " select pasted text
 nnoremap <expr> gp '`[' , strpart(getregtype(), 0, 1) . ']`'
@@ -327,9 +299,6 @@ nmap <Tab> >>
 imap <S-Tab> <Esc><<i
 nmap <S-tab> <<
 
-"*****************************************************************************
-" remove trailing whitespaces
-command! FixWhitespace :%s/\s\+$//e
 
 "RestoreCursorShapeOnExit
 autocmd VimLeave * set guicursor=v-c-sm:block,n-i-ci-ve:ver25,r-cr-o:hor20
@@ -364,22 +333,22 @@ let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/
 nmap <leader>b :Buffers<CR>
 nmap <leader>c :Commands<CR>
 nmap <leader>t :BTags<CR>
-nmap <leader>/ :Rg<CR>
+nmap <leader>F :Rg<CR>
 nmap <leader>sh :History:<CR>
 let g:fzf_colors =
             \ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+            \ 'bg':      ['bg', 'Normal'],
+            \ 'hl':      ['fg', 'Comment'],
+            \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+            \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+            \ 'hl+':     ['fg', 'Statement'],
+            \ 'info':    ['fg', 'PreProc'],
+            \ 'border':  ['fg', 'Ignore'],
+            \ 'prompt':  ['fg', 'Conditional'],
+            \ 'pointer': ['fg', 'Exception'],
+            \ 'marker':  ['fg', 'Keyword'],
+            \ 'spinner': ['fg', 'Label'],
+            \ 'header':  ['fg', 'Comment'] }
 
 let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' }}
 let g:fzf_tags_command = 'ctags -R'
@@ -415,23 +384,8 @@ if has('autocmd')
     autocmd GUIEnter * set visualbell t_vb=
 endif
 
-"" Copy/Paste/Cut
-if has('unnamedplus')
-    set clipboard=unnamed,unnamedplus
-endif
-
-noremap YY "+y<CR>
 noremap <leader>p "+gP<CR>
 noremap XX "+x<CR>
-
-"" Buffer nav
-noremap <leader>z :bp<CR>
-noremap <leader>q :bp<CR>
-noremap <leader>x :bn<CR>
-noremap <leader>w :bn<CR>
-
-"" Close buffer
-noremap <leader>c :bd<CR>
 
 "" Clean search (highlight)
 nnoremap <silent> <leader><space> :noh<cr>
@@ -466,6 +420,7 @@ let g:airline#extensions#virtualenv#prefix = '🐍'
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:bufferline_echo = 0
+let g:airline#extensions#virtualenv#enabled = 1
 
 "Gundo
 nnoremap <F5> :GundoToggle <CR>
@@ -497,17 +452,6 @@ nnoremap <silent> <S-t> :tabnew<CR>
 nnoremap <Tab> gt
 nnoremap <S-Tab> gT
 
-"" fzf.vim
-set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
-let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
-
-" ripgrep
-if executable('rg')
-    let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-    set grepprg=rg\ --vimgrep
-    command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
-endif
 
 "*****************************************************************************
 "" Markdown
@@ -517,7 +461,7 @@ let g:vim_markdown_fenced_languages = ['tsx=typescriptreact']
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_folding_frontmatter = 1
 nnoremap <silent> <leader>b :Buffers<CR>
-nnoremap <silent> <C-s> :Rg<CR>
+nnoremap <silent> <leader>F :Rg<CR>
 nnoremap <silent> <C-f> :FZF -m<CR>
 
 "Recovery commands from history through FZF
@@ -533,10 +477,6 @@ if has('autocmd')
     autocmd GUIEnter * set visualbell t_vb=
 endif
 
-"" Copy/Paste/Cut
-if has('unnamedplus')
-    set clipboard=unnamed,unnamedplus
-endif
 
 noremap YY "+y<CR>
 noremap <leader>p "+gP<CR>
@@ -557,6 +497,7 @@ hi EasyMotionTarget ctermfg=9 guifg=red
 hi EasyMotionTarget2First cterm=underline ctermfg=9 guifg=red
 hi EasyMotionTarget2Second cterm=underline ctermfg=9 guifg=lightred
 hi link EasyMotionShade Comment
+
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
@@ -574,21 +515,9 @@ augroup vimrc-python
                 \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
-let g:airline#extensions#virtualenv#enabled = 1
 
 " Syntax highlight
 let python_highlight_all = 1
-
-" ruby
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
-
-augroup vimrc-ruby
-    autocmd!
-    autocmd BufNewFile,BufRead *.rb,*.rbw,*.gemspec setlocal filetype=ruby
-    autocmd FileType ruby set tabstop=2|set shiftwidth=2|set expandtab softtabstop=2
-augroup END
 
 "*****************************************************************************
 "" Convenience variables

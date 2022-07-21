@@ -10,6 +10,8 @@ Plug 'danielsiepmann/neotags'
 Plug 'tpope/vim-commentary'
 Plug 'jameshiew/nvim-magic'
 Plug 'scrooloose/syntastic'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'romgrk/barbar.nvim'
 
 "*****************************************************************************
 "" Appearance
