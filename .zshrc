@@ -109,7 +109,7 @@ function exit_venv {
 }
 
 function env_history_search() {
-    env | fzf
+    env | cut -d'=' -f1- | sort --reverse | fzf
 }
 
 zle -N env_history_search
@@ -125,7 +125,21 @@ export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 
-export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || bat {}) 2> /dev/null | head -300' --preview-window='right:hidden:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)'"
+export FZF_DEFAULT_OPTS="
+--layout=reverse
+--info=inline
+--height=80%
+--multi
+--preview-window=:hidden
+--preview '([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
+--color='hl:148,hl+:154,pointer:032,marker:010,bg+:237,gutter:008'
+--prompt='∼ ' --pointer='▶' --marker='✓'
+--bind '?:toggle-preview'
+--bind 'ctrl-a:select-all'
+--bind 'ctrl-y:execute-silent(echo {+} | pbcopy)'
+--bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
+--bind 'ctrl-v:execute(code {+})'
+"
 
 export PYTHONBREAKPOINT=ipdb.set_trace
 
@@ -182,6 +196,27 @@ fi
 
 echo ".zshrc file loaded successfully for $USER"
 
+# install forgit
+source <(curl -sSL git.io/forgit)
+FORGIT_FZF_DEFAULT_OPTS="
+--exact
+--border
+--cycle
+--reverse
+--height '80%'
+"
+
+
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+echo "----------------------------------------------------------------------------------------------------------"
+echo "gss: git stash viewer"
+echo "ga: git add viewer"
+echo "glo: git log viewer"
+echo "gd: git diff viewer"
+echo "gcf: git checkout file"
+echo "----------------------------------------------------------------------------------------------------------"

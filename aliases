@@ -6,7 +6,7 @@ alias pg="rg -g '*\.py' -g '*\.rb'"
 alias pgg="rgg -g '*\.py' -g '*\.rb'"
 
 # find process
-alias pf='ps aux | cut -c 1-50| fzf'
+alias pf='ps aux | cut -d' ' -f1,10 | sort -k 1,2fzf'
 
 # ipython
 alias p='ipython'

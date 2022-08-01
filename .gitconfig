@@ -1,7 +1,18 @@
 # This can be copied to ~/.gitconfig for some common git settings and aliases
+[core]
+    pager=delta
+
 [user]
     email = gpappu@easypost.com
     name = Gautam Pappu
+
+[interactive]
+    diffFilter=delta --color-only
+[add.interactive]
+    useBuiltin=false
+[delta]
+    navigate = true
+    light = false
 
 [apply]
     whitespace=fix
@@ -59,5 +70,8 @@
     excludeDecoration = refs/tags/phabricator/*
     decorate = short
 
+[diff]
+    colorMoved= default
+
 [merge]
-    log = true
+    conflictstyle=diff3
