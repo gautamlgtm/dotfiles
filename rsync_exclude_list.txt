@@ -1,8 +1,0 @@
-/venv
-cmake-build-debug
-CMakeCache.txt
-__pycache__
-/dist 
-/node_nodules
-.arclint
-*.pyc
