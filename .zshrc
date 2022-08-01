@@ -4,14 +4,48 @@ export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 # init prompt
+ZSH_THEME_GIT_PROMPT_PREFIX="git:%{$fg[magenta]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[magenta]%})💩 "
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[cyan]%})👌 "
+
+function virtualenv_info {
+    [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
+}
+
+function git_prompt_info_short() {
+  # If we are on a folder not tracked by git, get out.
+  # Otherwise, check for hide-info at global and local repository level
+  if ! __git_prompt_git rev-parse --git-dir &> /dev/null \
+     || [[ "$(__git_prompt_git config --get oh-my-zsh.hide-info 2>/dev/null)" == 1 ]]; then
+    return 0
+  fi
+
+  local ref
+  ref=$(__git_prompt_git symbolic-ref --short HEAD 2> /dev/null) \
+  || ref=$(__git_prompt_git rev-parse --short HEAD 2> /dev/null) \
+  || return 0
+
+  # Use global ZSH_THEME_GIT_SHOW_UPSTREAM=1 for including upstream remote info
+  local upstream
+  if (( ${+ZSH_THEME_GIT_SHOW_UPSTREAM} )); then
+    upstream=$(__git_prompt_git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}" 2>/dev/null) \
+    && upstream=" -> ${upstream}"
+  fi
+
+  echo "${ZSH_THEME_GIT_PROMPT_PREFIX}%20>…>${ref}%>>${upstream}${ZSH_THEME_GIT_PROMPT_SUFFIX}"
+}
+
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-eval "$(oh-my-posh --init --shell zsh --config ~/.mytheme.omp.json)"
-oh-my-posh config export --output ~/.mytheme.omp.json
-enable_poshtooltips
+
+PROMPT='%{$fg_bold[blue]%}$(virtualenv_info)%{$fg_bold[green]%}%3~ %{$fg_bold[blue]%}$(git_prompt_info_short)%{$fg_bold[blue]%} ❯❯❯ %{$reset_color%}'
 
 plugins=(
+    colors
     fast-syntax-highlighting
     zsh-autosuggestions
+    colored-man-pages
+    brew
     fzf
 )
 
@@ -74,8 +108,16 @@ function exit_venv {
   fi
 }
 
+function env_history_search() {
+    env | fzf
+}
+
+zle -N env_history_search
+
+
 bindkey -e
 bindkey '^R' history-incremental-search-backward
+bindkey '^E' env_history_search
 
 export FD_OPTIONS="--follow --exclude .git --exclude node_modules"
 

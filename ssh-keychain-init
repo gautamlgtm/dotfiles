@@ -19,16 +19,16 @@ for pubkey in $KEYS; do
     PRIV_KEY=${pubkey%.*}
     #echo ${EXTENSION}
     #echo ${PRIV_KEY}
-    if  [[ -e ${PRIV_KEY} ]]; then
-        echo     Adding to keychain: ${PRIV_KEY}
-        if     [[ $USES_KEYCHAIN ]]; then
-            keychain        -q ${PRIV_KEY}
+    if   [[ -e ${PRIV_KEY} ]]; then
+        echo         Adding to keychain: ${PRIV_KEY}
+        if         [[ $USES_KEYCHAIN ]]; then
+            keychain               -q ${PRIV_KEY}
         else
-            if        [ $KERNEL == 'Darwin' ]; then
+            if               [ $KERNEL == 'Darwin' ]; then
                 # store passphrase in Keychain
-                ssh-add           -K ${PRIV_KEY}
+                ssh-add                     -K ${PRIV_KEY}
             else
-                ssh-add           ${PRIV_KEY}
+                ssh-add                     ${PRIV_KEY}
             fi
         fi
     fi

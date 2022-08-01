@@ -1,114 +1,143 @@
+=
+# Make gems available
+require 'rubygems' if RUBY_VERSION <= '1.9.0'
+
+# http://drnicutilities.rubyforge.org/map_by_method/
+require 'map_by_method'
+
+# Dr Nic's gem inspired by
+# http://redhanded.hobix.com/inspect/stickItInYourIrbrcMethodfinder.html
+require 'what_methods'
+
+# Pretty Print method
+require 'pp'
+
+# Awesome Print gem (gem install awesome_print)
+require 'ap'
+
+# Print information about any HTTP requests being made
+# require 'net-http-spy'
+
+# Draw ASCII tables
+require 'hirb'
+require 'hirb/import_object'
+Hirb.enable
+extend Hirb::Console
+
+# 'lp' to show method lookup path
+require 'looksee'
+
+# Load the readline module.
+IRB.conf[:USE_READLINE] = true
+
+# Remove the annoying irb(main):001:0 and replace with >>
+IRB.conf[:PROMPT_MODE]  = :SIMPLE
+
+# Tab Completion
 require 'irb/completion'
-require 'rubygems'
 
-ActiveRecord::Base.logger.level = 1 if defined?(ActiveRecord)
-IRB.conf[:SAVE_HISTORY] = 1000
+# Automatic Indentation
+IRB.conf[:AUTO_INDENT]=true
 
-# Overriding Object class
+# Save History between irb sessions
+require 'irb/ext/save-history'
+IRB.conf[:SAVE_HISTORY] = 100
+IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb-save-history"
+
+# Wirble is a set of enhancements for irb
+# http://pablotron.org/software/wirble/README
+# Implies require 'pp', 'irb/completion', and 'rubygems'
+require 'wirble'
+Wirble.init
+
+# Enable colored output
+Wirble.colorize
+
+# Clear the screen
+def clear
+  system 'clear'
+  if ENV['RAILS_ENV']
+    return "Rails environment: " + ENV['RAILS_ENV']
+  else
+    return "No rails environment - happy hacking!";
+  end
+end
+
+# Shortcuts
+alias c clear
+
+# Load / reload files faster
+# http://www.themomorohoax.com/2009/03/27/irb-tip-load-files-faster
+def fl(file_name)
+  file_name += '.rb' unless file_name =~ /\.rb/
+    @@recent = file_name
+  load "#{file_name}"
+end
+
+def rl
+  fl(@@recent)
+end
+
+# Reload the file and try the last command again
+# http://www.themomorohoax.com/2009/04/07/ruby-irb-tip-try-again-faster
+def rt
+  rl
+  eval(choose_last_command)
+end
+
+# prevent 'rt' itself from recursing.
+def choose_last_command
+  real_last = Readline::HISTORY.to_a[-2]
+  real_last == 'rt' ? @@saved_last :  (@@saved_last = real_last)
+end
+
+# Method to pretty-print object methods
+# Coded by sebastian delmont
+# http://snippets.dzone.com/posts/show/2916
 class Object
-  # Easily print methods local to an object's class
-  def lm
-    (methods - Object.instance_methods).sort
-  end
+  ANSI_BOLD       = "\033[1m"
+  ANSI_RESET      = "\033[0m"
+  ANSI_LGRAY    = "\033[0;37m"
+  ANSI_GRAY     = "\033[1;30m"
+  # Print object's methods
+  def pm(*options)
+    methods = self.methods
+    methods -= Object.methods unless options.include? :more
+    filter = options.select {|opt| opt.kind_of? Regexp}.first
+    methods = methods.select {|name| name =~ filter} if filter
 
-  # look up source location of a method
-  def sl(method_name)
-    method(method_name).source_location
-  rescue StandardError
-    "#{method_name} not found"
-  end
-
-  # open particular method in vs code
-  def ocode(method_name)
-    file, line = sl(method_name)
-    if file && line
-      `code -g '#{file}:#{line}'`
-    else
-      "'#{method_name}' not found :(Try #{name}.lm to see available methods"
+    data = methods.sort.collect do |name|
+      method = self.method(name)
+      if method.arity == 0
+        args = "()"
+      elsif method.arity > 0
+        n = method.arity
+        args = "(#{(1..n).collect {|i| "arg#{i}"}.join(", ")})"
+      elsif method.arity < 0
+        n = -method.arity
+        args = "(#{(1..n).collect {|i| "arg#{i}"}.join(", ")}, ...)"
+      end
+      klass = $1 if method.inspect =~ /Method: (.*?)#/
+        [name, args, klass]
     end
-  end
-
-  # display method source in rails console
-  def ds(method_name)
-    method(method_name).source.display
-  end
-
-  # open json object in VS Code Editor
-  def oo
-    tempfile = File.join(Rails.root.join('tmp'), SecureRandom.hex)
-    File.open(tempfile, 'w') { |f| f << as_json }
-    system("#{'code' || 'nano'} #{tempfile}")
-    sleep(1)
-    File.delete(tempfile)
+    max_name = data.collect {|item| item[0].size}.max
+    max_args = data.collect {|item| item[1].size}.max
+    data.each do |item|
+      print " #{ANSI_BOLD}#{item[0].to_s.rjust(max_name)}#{ANSI_RESET}"
+      print "#{ANSI_GRAY}#{item[1].ljust(max_args)}#{ANSI_RESET}"
+      print "   #{ANSI_LGRAY}#{item[2]}#{ANSI_RESET}\n"
+    end
+    data.size
   end
 end
 
-# history command
-def hist(count = 0)
-  # Get history into an array
-  history_array = Readline::HISTORY.to_a
+# Bond (Bash-like tab completion)
+require 'bond'
+Bond.start
 
-  # if count is > 0 we'll use it.
-  # otherwise set it to 0
-  count = count > 0 ? count : 0
-
-  if count > 0
-    from = history_array.length - count
-    history_array = history_array[from..-1]
-  end
-
-  print history_array.join("\n")
+# Quick way to run just a few specific lines from a file
+def eval_lines(fn, lines)
+  eval( File.readlines(fn)[lines].join)
 end
 
-# copy a string to the clipboard
-def cp(string)
-  `echo "#{string}" | pbcopy`
-  puts 'copied in clipboard'
-end
-
-# reloads the irb console can be useful for debugging .irbrc
-def reload_irb
-  load File.expand_path('~/.irbrc')
-  # will reload rails env if you are running ./script/console
-  reload! if @script_console_running
-  puts 'Console Reloaded!'
-end
-
-# opens irbrc in vscode
-def edit_irb
-  `code ~/.irbrc` if system('code')
-end
-
-def bm
-  # From http://blog.evanweaver.com/articles/2006/12/13/benchmark/
-  # Call benchmark { } with any block and you get the wallclock runtime
-  # as well as a percent change + or - from the last run
-  cur = Time.now
-  result = yield
-  print "#{cur = Time.now - cur} seconds"
-  begin
-    puts " (#{(cur / $last_benchmark * 100).to_i - 100}% change)"
-  rescue StandardError
-    puts ''
-  end
-  $last_benchmark = cur
-  result
-end
-
-# exit using `q`
-alias q exit
-
-# all available methods explaination
-def ll
-  puts '============================================================================================================='
-  puts 'Welcome to rails console. Here are few list of pre-defined methods you can use.'
-  puts '============================================================================================================='
-  puts 'obj.sl(:method) ------> source location e.g lead.sl(:name)'
-  puts 'obj.ocode(:method) ---> open method in vs code e.g lead.ocode(:name)'
-  puts 'obj.dispsoc(:method) -> display method source in rails console e.g lead.dispsoc(:name)'
-  puts 'obj.oo ---------------> open object json in vs code e.g lead.oo'
-  puts 'hist(n) --------------> command history e.g hist(10)'
-  puts 'cp(str) --------------> copy string in clipboard e.g cp(lead.name)'
-  puts 'bm(block) ------------> benchmarking for block passed as an argument e.g bm { Lead.all.pluck(:stage);0 }'
-  puts '============================================================================================================='
-end
+require 'interactive_editor'

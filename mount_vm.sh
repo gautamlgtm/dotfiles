@@ -2,7 +2,7 @@ MOUNTPOINT=${HOME}/remote-vm
 mkdir -p ${MOUNTPOINT}
 
 if mount | grep "on ${MOUNTPOINT}" > /dev/null; then
-    diskutil  unmount force ${MOUNTPOINT}
+    diskutil   unmount force ${MOUNTPOINT}
 fi
 
 ssh-add -A

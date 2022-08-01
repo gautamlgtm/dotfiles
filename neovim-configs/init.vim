@@ -12,11 +12,10 @@ Plug 'jameshiew/nvim-magic'
 Plug 'scrooloose/syntastic'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
-
 "*****************************************************************************
 "" Appearance
 "*****************************************************************************
-"
+
 " Aesthetics - Colorschemes
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'rebelot/kanagawa.nvim'
@@ -28,7 +27,6 @@ Plug 'crusoexia/vim-monokai'
 Plug 'tomasr/molokai'
 
 " Aesthetics - Others
-Plug 'mhinz/vim-startify'
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -79,7 +77,7 @@ call plug#end()
 "" Basic Setup
 "*****************************************************************************"
 "" Encoding
-let g:python3_host_prog = '/opt/homebrew/bin/python3'
+let g:python3_host_prog='/opt/homebrew/bin/python3'
 filetype plugin indent on
 set clipboard=unnamed
 set encoding=UTF-8
@@ -125,10 +123,6 @@ set lazyredraw
 set cursorline
 set autoread
 
-" underline cursor
-autocmd VimEnter * hi CursorLine cterm=underline
-autocmd VimEnter * hi CursorLine gui=underline
-
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
@@ -138,12 +132,11 @@ set number
 set wrap
 let no_buffers_menu=1
 set wildmenu
-set mouse=a
+set mouse=v
 set mousemodel=popup
 set termguicolors
 set gfn=Hack\ 10
 let g:vim_bootstrap_langs = "html,python,ruby"
-
 
 set scrolloff=5
 
@@ -271,12 +264,12 @@ if executable('rg')
     command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 endif
 
-nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <C-b> :Buffers<CR>
 nnoremap <silent> <C-r> :Rg<CR>
 nnoremap <silent> <C-f> :FZF -m<CR>
 
 "Recovery commands from history through FZF
-nmap <leader>y :History:<CR>
+nmap <C-h> :History:<CR>
 
 " Tagbar
 nmap <silent> <C-t> :TagbarToggle<CR>
@@ -327,7 +320,6 @@ augroup END
 " flake8 options
 let g:ale_python_flake8_options = '--max-line-length=120'
 " black options
-let g:ale_python_black_options = '--skip-string-normalization'
 let g:ale_linters = {
             \   '*': ['remove_trailing_lines', 'trim_whitespace'],
             \   'python': ['flake8'],

@@ -51,6 +51,7 @@ Plug 'jistr/vim-nerdtree-tabs'
 "" Others
 "*****************************************************************************
 Plug 'zef/vim-cycle'
+Plug 'vim-scripts/bufexplorer'
 Plug 'romainl/vim-cool'
 Plug 'scrooloose/nerdcommenter'
 Plug 'danielsiepmann/neotags'

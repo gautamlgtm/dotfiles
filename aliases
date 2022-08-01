@@ -6,8 +6,7 @@ alias pg="rg -g '*\.py' -g '*\.rb'"
 alias pgg="rgg -g '*\.py' -g '*\.rb'"
 
 # find process
-alias pf="ps aux | grep"
-alias fp="lsof -aPi -p"
+alias pf='ps aux | cut -c 1-50| fzf'
 
 # ipython
 alias p='ipython'
