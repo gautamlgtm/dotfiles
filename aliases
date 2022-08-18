@@ -12,12 +12,12 @@ alias pf='ps aux | cut -d' ' -f1,10 | sort -k 1,2fzf'
 alias p='ipython'
 
 # ls
- LS_BASE="ls -AFGh --color=always"
+ LS_BASE="lsd -AFh"
  alias l="$LS_BASE"
- alias ll="$LS_BASE -gl"
- alias lS="$LS_BASE -glS"
- alias lt="$LS_BASE -glt"
- alias ls="ls -FG "
+ alias ll="$LS_BASE -l"
+ alias lS="$LS_BASE -lS"
+ alias lt="$LS_BASE -lt"
+ alias ls="$LS_BASE -F "
 
 # manpage
 alias man='tldr'
