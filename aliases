@@ -5,14 +5,11 @@ alias rgg="rg -g '!*test*' -g '!*spec*'"
 alias pg="rg -g '*\.py' -g '*\.rb'"
 alias pgg="rgg -g '*\.py' -g '*\.rb'"
 
-# find process
-alias pf='ps aux | cut -d' ' -f1,10 | sort -k 1,2fzf'
-
 # ipython
 alias p='ipython'
 
 # ls
- LS_BASE="lsd -AFh"
+ LS_BASE="ls -AFh"
  alias l="$LS_BASE"
  alias ll="$LS_BASE -l"
  alias lS="$LS_BASE -lS"
@@ -140,23 +137,12 @@ eval ${KSH_CMD}
 
 
 # Dev tools
-
 function virtualenv_info {
     [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
 }
 
-# Password Tools
-ONEPASS_BASE='1pass'
-alias oplogin="$ONEPASS_BASE -rv"
-alias opls='$ONEPASS_BASE -l'
-
-function opfind {
-    echo $($ONEPASS_BASE -l |grep "$1")
-}
-
-function opgp {
-    declare input=$(opfind omni) < /dev/stdin ; opgp $input
-}
+alias du='ncdu --color=dark'
+alias top='htop'
 
 # Pytest
 alias it='pytest -rEf --ds config.settings.integration_test -m integration -s --no-cov --reuse-db'
@@ -169,23 +155,13 @@ alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GE
 #ssh
 alias keyup='. ssh-agent-init;ssh-keychain-init'
 
+alias workfs='~/mount_vm.sh'
 
 function devbox() {
-	ssh dev -t 'tmux -CC new-session -A -s devbox' 2>&1
+	ssh dev -t 'tmux -CC new-session -A -s gautams-worklaptop' 2>&1
 }
 
 
 hash -d d="$HOME/dotfiles"
-hash -d ep="$HOME/easypost"
-
-alias ep='~hq'
-
-#replacements
-alias cat='bat'
-alias mv='mv -iv'
-alias rmm='rm -Iv'
-alias bd='batdiff'
-alias pb='prettybat'
-alias bw='batwatch'
 
 alias reload="source ~/.zshrc"

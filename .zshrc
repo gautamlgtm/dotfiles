@@ -38,7 +38,7 @@ function git_prompt_info_short() {
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
-PROMPT='%{$fg_bold[blue]%}$(virtualenv_info)%{$fg_bold[green]%}%3~ %{$fg_bold[blue]%}$(git_prompt_info_short)%{$fg_bold[blue]%} ❯❯❯ %{$reset_color%}'
+PROMPT='%{$fg_bold[blue]%}$(virtualenv_info)%{$fg_bold[green]%}%3~ %{$fg_bold[blue]%}$(git_prompt_info_short)%{$fg_bold[white]%} ❯❯❯ %{$reset_color%}'
 
 plugins=(
     colors
@@ -118,8 +118,12 @@ zle -N env_history_search
 bindkey -e
 bindkey '^R' history-incremental-search-backward
 bindkey '^E' env_history_search
+bindkey '^a' beginning-of-line
+bindkey '^e' end-of-line
+bindkey '^b' backward-word
+bindkey '^f' forward-word
 
-export FD_OPTIONS="--follow --exclude .git --exclude node_modules"
+export FD_OPTIONS="--follow --exclude .git --exclude node_modules --exclude .venv"
 
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
@@ -142,11 +146,6 @@ export FZF_DEFAULT_OPTS="
 "
 
 export PYTHONBREAKPOINT=ipdb.set_trace
-
-#easypost
-if [ -d ~/ssh-setup ]; then
-    export PATH="$HOME/ssh-setup:$PATH"
-fi
 
 #GOSETUP
 export GOROOT="/usr/local/go"
@@ -188,35 +187,7 @@ else
   echo "No need to setup ssh-agent, already in server"
 fi
 
-if [ -f /usr/local/etc/1pass/bash_completion.sh ]; then
-    source /usr/local/etc/1pass/bash_completion.sh
-else
-    echo "Please configure onepassword cli"
-fi
-
-echo ".zshrc file loaded successfully for $USER"
-
-# install forgit
-source <(curl -sSL git.io/forgit)
-FORGIT_FZF_DEFAULT_OPTS="
---exact
---border
---cycle
---reverse
---height '80%'
-"
-
-
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
-echo "----------------------------------------------------------------------------------------------------------"
-echo "gss: git stash viewer"
-echo "ga: git add viewer"
-echo "glo: git log viewer"
-echo "gd: git diff viewer"
-echo "gcf: git checkout file"
-echo "----------------------------------------------------------------------------------------------------------"
